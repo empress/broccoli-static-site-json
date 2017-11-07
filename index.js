@@ -1,15 +1,20 @@
 const Plugin = require('broccoli-plugin');
-const { extname, join, dirname } = require('path');
 const walkSync = require('walk-sync');
 const yamlFront = require('yaml-front-matter');
 const { Serializer } = require('jsonapi-serializer');
 const yaml = require('js-yaml');
 const {
+  existsSync,
+  mkdirSync,
   readFileSync,
   writeFileSync,
-  mkdirSync,
-  existsSync,
 } = require('fs');
+const {
+  basename,
+  dirname,
+  extname,
+  join,
+} = require('path');
 
 const ContentSerializer = new Serializer('content', {
   id: 'path',
@@ -32,6 +37,7 @@ const TableOfContentsSerializer = new Serializer('page', {
   attributes: [
     'title',
     'pages',
+    'skip_toc',
   ],
   keyForAttribute: 'cammelcase',
 });
@@ -111,7 +117,7 @@ class BroccoliStaticSiteJson extends Plugin {
 
       const serialized = ContentSerializer.serialize(file);
 
-      writeFileSync(join(this.outputPath, this.options.contentFolder, `${file.path}.json`), JSON.stringify(serialized));
+      writeFileSync(join(this.outputPath, this.options.contentFolder, `${join(dirname(file.path), basename(file.path, '.md'))}.json`), JSON.stringify(serialized));
     });
   }
 }
