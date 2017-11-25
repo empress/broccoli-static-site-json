@@ -3,12 +3,15 @@ const walkSync = require('walk-sync');
 const yamlFront = require('yaml-front-matter');
 const { Serializer } = require('jsonapi-serializer');
 const yaml = require('js-yaml');
+const mkdirp = require('mkdirp');
+
 const {
   existsSync,
   mkdirSync,
   readFileSync,
   writeFileSync,
 } = require('fs');
+
 const {
   basename,
   dirname,
@@ -72,7 +75,7 @@ class BroccoliStaticSiteJson extends Plugin {
   build() {
     // build content folder if it doesnt exist
     if (!existsSync(join(this.outputPath, this.options.contentFolder))) {
-      mkdirSync(join(this.outputPath, this.options.contentFolder));
+      mkdirp.sync(join(this.outputPath, this.options.contentFolder));
     }
 
     // build pages file
@@ -106,13 +109,13 @@ class BroccoliStaticSiteJson extends Plugin {
     }));
 
     if (!existsSync(join(this.outputPath, this.options.contentFolder))) {
-      mkdirSync(join(this.outputPath, this.options.contentFolder));
+      mkdirp.sync(join(this.outputPath, this.options.contentFolder));
     }
 
     fileData.forEach((file) => {
       const directory = dirname(join(this.outputPath, this.options.contentFolder, file.path));
       if (!existsSync(directory)) {
-        mkdirSync(dirname(join(this.outputPath, this.options.contentFolder, file.path)));
+        mkdirp.sync(dirname(join(this.outputPath, this.options.contentFolder, file.path)));
       }
 
       const serialized = ContentSerializer.serialize(file);
