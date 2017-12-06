@@ -4,10 +4,10 @@ const yamlFront = require('yaml-front-matter');
 const { Serializer } = require('jsonapi-serializer');
 const yaml = require('js-yaml');
 const mkdirp = require('mkdirp');
+const assign = require('lodash.assign');
 
 const {
   existsSync,
-  mkdirSync,
   readFileSync,
   writeFileSync,
 } = require('fs');
@@ -62,11 +62,12 @@ class BroccoliStaticSiteJson extends Plugin {
   constructor(folder, options) {
     // tell broccoli which "nodes" we're watching
     super([folder], options);
-    this.options = {
+
+    this.options = assign({}, {
       folder,
       contentFolder: 'content',
-      ...options,
-    };
+    }, options);
+
     Plugin.call(this, [folder], {
       annotation: options.annotation,
     });
@@ -103,10 +104,9 @@ class BroccoliStaticSiteJson extends Plugin {
     const fileData = mdFiles.map(path => ({
       path,
       content: readFileSync(join(this.options.folder, path)),
-    })).map(file => ({
+    })).map(file => assign({}, {
       path: file.path,
-      ...yamlFront.loadFront(file.content),
-    }));
+    }, yamlFront.loadFront(file.content)));
 
     if (!existsSync(join(this.outputPath, this.options.contentFolder))) {
       mkdirp.sync(join(this.outputPath, this.options.contentFolder));
