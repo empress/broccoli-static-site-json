@@ -58,6 +58,20 @@ function subpageUrls(parentUrl, currentPage, childPages) {
   }
 }
 
+function readMarkdownFolder(src, options) {
+  // build the tree of MD files
+  const paths = walkSync(src);
+
+  const mdFiles = paths.filter(path => extname(path) === '.md');
+
+  return mdFiles.map(path => ({
+    path,
+    content: readFileSync(join(options.folder, path)),
+  })).map(file => assign({}, {
+    path: file.path,
+  }, yamlFront.loadFront(file.content)));
+}
+
 class BroccoliStaticSiteJson extends Plugin {
   constructor(folder, options) {
     // tell broccoli which "nodes" we're watching
@@ -97,16 +111,7 @@ class BroccoliStaticSiteJson extends Plugin {
     }
 
     // build the tree of MD files
-    const paths = walkSync(this.inputPaths);
-
-    const mdFiles = paths.filter(path => extname(path) === '.md');
-
-    const fileData = mdFiles.map(path => ({
-      path,
-      content: readFileSync(join(this.options.folder, path)),
-    })).map(file => assign({}, {
-      path: file.path,
-    }, yamlFront.loadFront(file.content)));
+    const fileData = readMarkdownFolder(this.inputPaths, this.options);
 
     if (!existsSync(join(this.outputPath, this.options.contentFolder))) {
       mkdirp.sync(join(this.outputPath, this.options.contentFolder));
@@ -122,6 +127,17 @@ class BroccoliStaticSiteJson extends Plugin {
 
       writeFileSync(join(this.outputPath, this.options.contentFolder, `${join(dirname(file.path), basename(file.path, '.md'))}.json`), JSON.stringify(serialized));
     });
+
+    if (this.options.collections) {
+      this.options.collections.forEach((collection) => {
+        const collectionFileData = readMarkdownFolder(collection.src, this.options);
+
+        writeFileSync(
+          join(this.outputPath, this.options.contentFolder, collection.output),
+          JSON.stringify(ContentSerializer.serialize(collectionFileData))
+        );
+      });
+    }
   }
 }
 
