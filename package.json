@@ -1,6 +1,6 @@
 {
   "name": "broccoli-static-site-json",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Broccoli based static site generator that outputs a JSON:API representation of your Markdown files",
   "main": "index.js",
   "scripts": {
