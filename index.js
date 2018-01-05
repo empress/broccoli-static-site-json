@@ -5,6 +5,7 @@ const { Serializer } = require('jsonapi-serializer');
 const yaml = require('js-yaml');
 const mkdirp = require('mkdirp');
 const assign = require('lodash.assign');
+const _ = require('lodash');
 
 const {
   existsSync,
@@ -18,22 +19,6 @@ const {
   extname,
   join,
 } = require('path');
-
-const ContentSerializer = new Serializer('content', {
-  id: 'path',
-  attributes: [
-    '__content',
-    'title',
-  ],
-  keyForAttribute(attr) {
-    switch (attr) {
-      case '__content':
-        return 'content';
-      default:
-        return attr;
-    }
-  },
-});
 
 const TableOfContentsSerializer = new Serializer('page', {
   id: 'url',
@@ -82,6 +67,21 @@ class BroccoliStaticSiteJson extends Plugin {
       contentFolder: 'content',
     }, options);
 
+    this.contentSerializer = new Serializer('content', {
+      id: 'path',
+      attributes: _.union([
+        '__content',
+        'title'], options.attributes),
+      keyForAttribute(attr) {
+        switch (attr) {
+          case '__content':
+            return 'content';
+          default:
+            return attr;
+        }
+      },
+    });
+
     Plugin.call(this, [folder], {
       annotation: options.annotation,
     });
@@ -123,7 +123,7 @@ class BroccoliStaticSiteJson extends Plugin {
         mkdirp.sync(dirname(join(this.outputPath, this.options.contentFolder, file.path)));
       }
 
-      const serialized = ContentSerializer.serialize(file);
+      const serialized = this.contentSerializer.serialize(file);
 
       writeFileSync(join(this.outputPath, this.options.contentFolder, `${join(dirname(file.path), basename(file.path, '.md'))}.json`), JSON.stringify(serialized));
     });
@@ -134,7 +134,7 @@ class BroccoliStaticSiteJson extends Plugin {
 
         writeFileSync(
           join(this.outputPath, this.options.contentFolder, collection.output),
-          JSON.stringify(ContentSerializer.serialize(collectionFileData))
+          JSON.stringify(this.contentSerializer.serialize(collectionFileData))
         );
       });
     }
