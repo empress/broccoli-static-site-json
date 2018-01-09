@@ -6,6 +6,10 @@ const yaml = require('js-yaml');
 const mkdirp = require('mkdirp');
 const assign = require('lodash.assign');
 const _ = require('lodash');
+const showdown = require('showdown');
+const dasherize = require('dasherize');
+
+const converter = new showdown.Converter();
 
 const {
   existsSync,
@@ -49,12 +53,18 @@ function readMarkdownFolder(src, options) {
 
   const mdFiles = paths.filter(path => extname(path) === '.md');
 
-  return mdFiles.map(path => ({
-    path,
-    content: readFileSync(join(options.folder, path)),
-  })).map(file => assign({}, {
-    path: file.path,
-  }, yamlFront.loadFront(file.content)));
+  return mdFiles
+    .map(path => ({
+      path,
+      content: readFileSync(join(options.folder, path)),
+    }))
+    .map(file => assign({}, {
+      path: file.path,
+      id: file.path.replace(/.md$/, ''),
+    }, yamlFront.loadFront(file.content)))
+    .map(file => assign(file, {
+      html: converter.makeHtml(file.__content),
+    }));
 }
 
 class BroccoliStaticSiteJson extends Plugin {
@@ -67,23 +77,33 @@ class BroccoliStaticSiteJson extends Plugin {
       contentFolder: 'content',
     }, options);
 
-    this.contentSerializer = new Serializer('content', {
-      id: 'path',
+    const serializerOptions = {
       attributes: _.union([
         '__content',
-        'title'], options.attributes),
+        'html',
+        'title'], this.options.attributes),
       keyForAttribute(attr) {
         switch (attr) {
           case '__content':
             return 'content';
           default:
-            return attr;
+            return dasherize(_.camelCase(attr));
         }
       },
-    });
+    };
+
+    if (this.options.references) {
+      this.options.references.forEach((reference) => {
+        serializerOptions[reference] = { ref: true };
+      });
+
+      serializerOptions.attributes = _.union(serializerOptions.attributes, this.options.references);
+    }
+
+    this.contentSerializer = new Serializer(options.type || folder, serializerOptions);
 
     Plugin.call(this, [folder], {
-      annotation: options.annotation,
+      annotation: this.options.annotation,
     });
   }
 
@@ -111,7 +131,7 @@ class BroccoliStaticSiteJson extends Plugin {
     }
 
     // build the tree of MD files
-    const fileData = readMarkdownFolder(this.inputPaths, this.options);
+    const fileData = readMarkdownFolder(this.options.folder, this.options);
 
     if (!existsSync(join(this.outputPath, this.options.contentFolder))) {
       mkdirp.sync(join(this.outputPath, this.options.contentFolder));
