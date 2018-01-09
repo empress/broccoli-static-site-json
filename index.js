@@ -6,7 +6,10 @@ const yaml = require('js-yaml');
 const mkdirp = require('mkdirp');
 const assign = require('lodash.assign');
 const _ = require('lodash');
+const showdown = require('showdown');
 const dasherize = require('dasherize');
+
+const converter = new showdown.Converter();
 
 const {
   existsSync,
@@ -77,6 +80,7 @@ class BroccoliStaticSiteJson extends Plugin {
     const serializerOptions = {
       attributes: _.union([
         '__content',
+        'html',
         'title'], this.options.attributes),
       keyForAttribute(attr) {
         switch (attr) {
