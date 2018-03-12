@@ -100,7 +100,7 @@ class BroccoliStaticSiteJson extends Plugin {
       serializerOptions.attributes = _.union(serializerOptions.attributes, this.options.references);
     }
 
-    this.contentSerializer = new Serializer(options.type || folder, serializerOptions);
+    this.contentSerializer = new Serializer(this.options.type || folder, serializerOptions);
 
     Plugin.call(this, [folder], {
       annotation: this.options.annotation,

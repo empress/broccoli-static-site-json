@@ -1,6 +1,5 @@
 language: node_js
 node_js:
-  - 4
   - 6
 
 script: ./node_modules/.bin/mocha test/basic.js
