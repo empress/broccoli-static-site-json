@@ -33,7 +33,6 @@ describe('basic tests', function () {
 
             expect(indexJSON.data).to.deep.include({
               id: 'index',
-              type: input.dir,
               attributes: {
                 content: '# Hello world',
                 html: '<h1 id="helloworld">Hello world</h1>',

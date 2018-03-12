@@ -19,7 +19,8 @@
     "eslint": "^4.10.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
-    "mocha": "^5.0.4"
+    "mocha": "^5.0.4",
+    "nyc": "^11.4.1"
   },
   "dependencies": {
     "broccoli-plugin": "^1.3.0",
