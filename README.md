@@ -19,7 +19,7 @@ with markdown files. The most common usage would be to call StaticSiteJson on a 
 like this: `const contentJsonTree = new StaticSiteJson('content')`.
 
 Important nodes about default behaviour:
-- The name of the folder will be the default `type` for the JSON:API document 
+- The name of the folder will be the default `type` for the JSON:API document
 - The type will automatically be pluralised.  So if you use the above `content` folder the type will
 be `contents`
 - Using front-matter you can define the `ID` or the `Title` attribute of the content. Any other
@@ -56,7 +56,7 @@ App](https://github.com/ember-learn/guides-app)
 
 ## Detailed documentation
 
-### Attributes
+### Attributes
 By default this plugin is assume the only attribute available on the front-matter is `title`. You
 can configure what attributes you want exposed in the JSON:API output by simply adding the
 `attributes` config value as follows:
