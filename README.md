@@ -18,10 +18,12 @@ The most basic use of this Broccoli plugin is to generate a tree of JSON files f
 with markdown files. The most common usage would be to call StaticSiteJson on a `content` folder
 like this: `const contentJsonTree = new StaticSiteJson('content')`.
 
-Important nodes about default behaviour: - The name of the folder will be the default `type` for the
-JSON:API document - The type will automatically be pluralised.  So if you use the above `content`
-folder the type will be `contents` - Using front-matter you can define the `ID` or the `Title`
-attribute of the content. Any other attributes must be defined in configuration.
+Important nodes about default behaviour:
+- The name of the folder will be the default `type` for the JSON:API document 
+- The type will automatically be pluralised.  So if you use the above `content` folder the type will
+be `contents`
+- Using front-matter you can define the `ID` or the `Title` attribute of the content. Any other
+attributes must be defined in configuration.
 
 By default the plugin also looks for a `pages.yml` that exposes it as a JSON:API document named
 `pages.json` in the output path. As the name suggests, this JSON file is quite useful to build a
