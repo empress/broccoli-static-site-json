@@ -5,5 +5,32 @@
   "parserOptions": {
     "ecmaVersion": 6
   },
-  "extends": "airbnb-base"
+  "extends": "airbnb-base",
+  "rules": {
+    "no-underscore-dangle": [2, {
+      "allow": ["__content"]
+    }],
+    "comma-dangle": ["error", {
+      "arrays": "always-multiline",
+      "objects": "always-multiline",
+      "imports": "always",
+      "exports": "always",
+      "functions": "never"
+    }]
+  },
+  "overrides": [{
+    "files": ["test/**/*.js"],
+    "env": {
+      "mocha": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 2017
+    },
+    "rules": {
+      "func-names": [0],
+      "import/no-extraneous-dependencies": [0],
+      "prefer-arrow-callback": [0],
+      "arrow-body-style": [0]
+    }
+  }]
 }

@@ -4,7 +4,9 @@
   "description": "Broccoli based static site generator that outputs a JSON:API representation of your Markdown files",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "NODE_ENV=test nyc -a mocha --recursive",
+    "test-watch": "NODE_ENV=test mocha --recursive -w --reporter min",
+    "coverage": "NODE_ENV=test nyc -a report --reporter=text-lcov mocha > coverage/lcov.info"
   },
   "author": "Chris Manson <chris@stonecircle.io>",
   "repository": "https://github.com/stonecircle/broccoli-static-site-json",
@@ -12,9 +14,13 @@
   "devDependencies": {
     "@stonecircle/guides-source": "^1.0.1",
     "broccoli": "^1.1.4",
+    "broccoli-test-helper": "^1.2.0",
+    "chai": "^4.1.2",
     "eslint": "^4.10.0",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.8.0"
+    "eslint-plugin-import": "^2.8.0",
+    "mocha": "^5.0.4",
+    "nyc": "^11.4.1"
   },
   "dependencies": {
     "broccoli-plugin": "^1.3.0",

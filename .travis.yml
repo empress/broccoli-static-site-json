@@ -1,0 +1,28 @@
+language: node_js
+
+node_js:
+  - 8
+  - 9
+
+branches:
+  only:
+    - master
+
+matrix:
+  include:
+    - node_js: 6
+      script: ./node_modules/.bin/mocha test/basic.js
+
+env:
+  global:
+    - CC_TEST_REPORTER_ID=a423f9dc08076bee9055623718f9f3cfecbc3d36b9fd8681ee8297d6398d7263
+
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+  - mkdir coverage
+
+after_script:
+  - npm run coverage
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
