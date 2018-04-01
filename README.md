@@ -54,7 +54,7 @@ App](https://github.com/ember-learn/guides-app)
 
 ## Detailed documentation
 
-### Attributes
+### Attributes
 By default this plugin is assume the only attribute available on the front-matter is `title`. You
 can configure what attributes you want exposed in the JSON:API output by simply adding the
 `attributes` config value as follows:
