@@ -23,7 +23,7 @@ JSON:API document - The type will automatically be pluralised.  So if you use th
 folder the type will be `contents` - Using front-matter you can define the `ID` or the `Title`
 attribute of the content. Any other attributes must be defined in configuration.
 
-By default the plugin also looks for a `pages.yaml` that exposes it as a JSON:API document named
+By default the plugin also looks for a `pages.yml` that exposes it as a JSON:API document named
 `pages.json` in the output path. As the name suggests, this JSON file is quite useful to build a
 Table of Contents in the consuming application.
 
