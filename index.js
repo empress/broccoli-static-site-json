@@ -7,7 +7,6 @@ const mkdirp = require('mkdirp');
 const assign = require('lodash.assign');
 const _ = require('lodash');
 const showdown = require('showdown');
-const dasherize = require('dasherize');
 
 const converter = new showdown.Converter();
 
@@ -87,7 +86,7 @@ class BroccoliStaticSiteJson extends Plugin {
           case '__content':
             return 'content';
           default:
-            return dasherize(_.camelCase(attr));
+            return _.camelCase(attr);
         }
       },
     };
