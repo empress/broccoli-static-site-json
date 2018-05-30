@@ -66,8 +66,10 @@ function readMarkdownFolder(src, options) {
       html: converter.makeHtml(file.__content),
     }))
     .map((file) => {
-      const text = h2p(file.html);
-      const description = text.length > 260 ? `${text.substring(0, 260)}...` : text;
+      const description = _.truncate(h2p(file.html), {
+        length: 260,
+        separator: /,?\.* +/,
+      });
       return assign(file, {
         description,
       });
