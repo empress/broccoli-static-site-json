@@ -5,6 +5,7 @@ const { Serializer } = require('jsonapi-serializer');
 const yaml = require('js-yaml');
 const mkdirp = require('mkdirp');
 const assign = require('lodash.assign');
+const h2p = require('html2plaintext');
 const _ = require('lodash');
 const showdown = require('showdown');
 
@@ -63,7 +64,14 @@ function readMarkdownFolder(src, options) {
     }, yamlFront.loadFront(file.content)))
     .map(file => assign(file, {
       html: converter.makeHtml(file.__content),
-    }));
+    }))
+    .map((file) => {
+      const text = h2p(file.html);
+      const description = text.length > 260 ? `${text.substring(0, 260)}...` : text;
+      return assign(file, {
+        description,
+      });
+    });
 }
 
 class BroccoliStaticSiteJson extends Plugin {
@@ -79,6 +87,7 @@ class BroccoliStaticSiteJson extends Plugin {
     const serializerOptions = {
       attributes: _.union([
         '__content',
+        'description',
         'html',
         'title'], this.options.attributes),
       keyForAttribute(attr) {
