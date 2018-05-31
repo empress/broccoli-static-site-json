@@ -97,7 +97,7 @@ I really like programming. I could do this all day long without ever stooopping,
         contentTypes: ['html', 'content', 'description'],
       });
 
-    expect(result.attributes.description, 'does not end with ...').to.match(/\.\.\.$/);
+    expect(result.attributes.description).to.match(/\.\.\.$/);
   });
 
   it('should not end the description with ... when the content is limited', async () => {
@@ -108,7 +108,7 @@ This is where I write my really long essay to the world. I will start off bing *
         contentTypes: ['html', 'content', 'description'],
       });
 
-    expect(result.attributes.description, 'ends with ...').to.not.match(/\.\.\.$/);
+    expect(result.attributes.description).to.not.match(/\.\.\.$/);
   });
 
   it('should throw an error if there is an unknown content type', async () => {
