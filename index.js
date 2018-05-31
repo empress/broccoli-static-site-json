@@ -47,34 +47,6 @@ function subpageUrls(parentUrl, currentPage, childPages) {
   }
 }
 
-function readMarkdownFolder(src, options) {
-  // build the tree of MD files
-  const paths = walkSync(src);
-
-  const mdFiles = paths.filter(path => extname(path) === '.md');
-
-  return mdFiles
-    .map(path => ({
-      path,
-      content: readFileSync(join(options.folder, path)),
-    }))
-    .map(file => assign({}, {
-      path: file.path,
-      id: file.path.replace(/.md$/, ''),
-    }, yamlFront.loadFront(file.content)))
-    .map(file => assign(file, {
-      html: converter.makeHtml(file.__content),
-    }))
-    .map((file) => {
-      const description = _.truncate(h2p(file.html), {
-        length: 260,
-        separator: /,?\.* +/,
-      });
-      return assign(file, {
-        description,
-      });
-    });
-}
 
 class BroccoliStaticSiteJson extends Plugin {
   constructor(folder, options) {
