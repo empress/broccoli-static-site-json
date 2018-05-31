@@ -99,3 +99,25 @@ const jsonTree = new StaticSiteJson('content', {
   references: ['author'],
 });
 ```
+
+### Content types
+
+By default this plugin ouputs the Markdown in two formats: the original contents of the Markdown
+file under the `content` attribute and a HTML version of the file under the attribute `html`. If you
+did not need the original Markdown in production then you can remove it from the output by
+specifying the content types:
+
+```javascript
+const jsonTree = new StaticSiteJson('content', {
+  contentTypes: ['html'],
+});
+```
+
+#### Available content types
+
+- `content` - _default_
+  - Contains the full contents of the Markdown file
+- `html` - _default_
+  - Contains a simple html representation of the Markdown file
+- `description` - _optional_
+  - Contains the first 260 characters of the content of the file

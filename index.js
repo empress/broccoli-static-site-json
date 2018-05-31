@@ -1,14 +1,10 @@
 const Plugin = require('broccoli-plugin');
-const walkSync = require('walk-sync');
-const yamlFront = require('yaml-front-matter');
 const { Serializer } = require('jsonapi-serializer');
 const yaml = require('js-yaml');
 const mkdirp = require('mkdirp');
-const assign = require('lodash.assign');
 const _ = require('lodash');
-const showdown = require('showdown');
 
-const converter = new showdown.Converter();
+const readMarkdownFolder = require('./lib/readMarkdownFolder');
 
 const {
   existsSync,
@@ -19,7 +15,6 @@ const {
 const {
   basename,
   dirname,
-  extname,
   join,
 } = require('path');
 
@@ -46,49 +41,32 @@ function subpageUrls(parentUrl, currentPage, childPages) {
   }
 }
 
-function readMarkdownFolder(src, options) {
-  // build the tree of MD files
-  const paths = walkSync(src);
-
-  const mdFiles = paths.filter(path => extname(path) === '.md');
-
-  return mdFiles
-    .map(path => ({
-      path,
-      content: readFileSync(join(options.folder, path)),
-    }))
-    .map(file => assign({}, {
-      path: file.path,
-      id: file.path.replace(/.md$/, ''),
-    }, yamlFront.loadFront(file.content)))
-    .map(file => assign(file, {
-      html: converter.makeHtml(file.__content),
-    }));
-}
+const supportedContentTypes = ['content', 'html', 'description'];
 
 class BroccoliStaticSiteJson extends Plugin {
   constructor(folder, options) {
     // tell broccoli which "nodes" we're watching
     super([folder], options);
 
-    this.options = assign({}, {
+    this.options = _.assign({}, {
       folder,
       contentFolder: 'content',
+      contentTypes: ['html', 'content'],
     }, options);
 
+    const unsupportedContentTypes = _.difference(this.options.contentTypes, supportedContentTypes);
+
+    if (unsupportedContentTypes.length) {
+      throw new Error(`Unknown content type: ${unsupportedContentTypes[0]}`);
+    }
+
     const serializerOptions = {
-      attributes: _.union([
-        '__content',
-        'html',
-        'title'], this.options.attributes),
-      keyForAttribute(attr) {
-        switch (attr) {
-          case '__content':
-            return 'content';
-          default:
-            return _.camelCase(attr);
-        }
-      },
+      attributes: _.union(
+        this.options.contentTypes,
+        ['title'],
+        this.options.attributes
+      ),
+      keyForAttribute: 'camelCase',
     };
 
     if (this.options.references) {

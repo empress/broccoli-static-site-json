@@ -17,6 +17,11 @@ env:
   global:
     - CC_TEST_REPORTER_ID=a423f9dc08076bee9055623718f9f3cfecbc3d36b9fd8681ee8297d6398d7263
 
+before_install:
+  - npm config --global set spin false
+  # if npm version is less than 5, upgrade to 6
+  - if [[ $(npm -v | cut -d '.' -f 1) -lt 5 ]]; then npm i -g npm@6; fi
+
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
