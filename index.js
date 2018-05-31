@@ -48,12 +48,11 @@ class BroccoliStaticSiteJson extends Plugin {
     // tell broccoli which "nodes" we're watching
     super([folder], options);
 
-    this.options = {
+    this.options = _.assign({}, {
       folder,
       contentFolder: 'content',
       contentTypes: ['html', 'content'],
-      ...options,
-    };
+    }, options);
 
     const unsupportedContentTypes = _.difference(this.options.contentTypes, supportedContentTypes);
 
