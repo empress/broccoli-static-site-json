@@ -21,7 +21,7 @@ async function buildSingleFile(fileContents, options) {
   return indexJSON.data;
 }
 
-describe.only('JSONAPI attributes', () => {
+describe('JSONAPI attributes', () => {
   beforeEach(async () => {
     input = await createTempDir();
   });

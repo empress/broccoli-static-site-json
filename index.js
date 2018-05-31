@@ -1,15 +1,10 @@
 const Plugin = require('broccoli-plugin');
-const walkSync = require('walk-sync');
-const yamlFront = require('yaml-front-matter');
 const { Serializer } = require('jsonapi-serializer');
 const yaml = require('js-yaml');
 const mkdirp = require('mkdirp');
-const assign = require('lodash.assign');
-const h2p = require('html2plaintext');
 const _ = require('lodash');
-const showdown = require('showdown');
 
-const converter = new showdown.Converter();
+const readMarkdownFolder = require('./lib/readMarkdownFolder');
 
 const {
   existsSync,
@@ -20,7 +15,6 @@ const {
 const {
   basename,
   dirname,
-  extname,
   join,
 } = require('path');
 
@@ -47,31 +41,33 @@ function subpageUrls(parentUrl, currentPage, childPages) {
   }
 }
 
+const supportedContentTypes = ['content', 'html', 'description'];
 
 class BroccoliStaticSiteJson extends Plugin {
   constructor(folder, options) {
     // tell broccoli which "nodes" we're watching
     super([folder], options);
 
-    this.options = assign({}, {
+    this.options = {
       folder,
       contentFolder: 'content',
-    }, options);
+      contentTypes: ['html', 'content'],
+      ...options,
+    };
+
+    const unsupportedContentTypes = _.difference(this.options.contentTypes, supportedContentTypes);
+
+    if (unsupportedContentTypes.length) {
+      throw new Error(`Unknown content type: ${unsupportedContentTypes[0]}`);
+    }
 
     const serializerOptions = {
-      attributes: _.union([
-        '__content',
-        'description',
-        'html',
-        'title'], this.options.attributes),
-      keyForAttribute(attr) {
-        switch (attr) {
-          case '__content':
-            return 'content';
-          default:
-            return _.camelCase(attr);
-        }
-      },
+      attributes: _.union(
+        this.options.contentTypes,
+        ['title'],
+        this.options.attributes
+      ),
+      keyForAttribute: 'camelCase',
     };
 
     if (this.options.references) {
