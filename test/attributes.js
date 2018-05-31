@@ -100,7 +100,7 @@ I really like programming. I could do this all day long without ever stooopping,
     expect(result.attributes.description).to.match(/\.\.\.$/);
   });
 
-  it('should not end the description with ... when the content is limited', async () => {
+  it('should not end the description with ... when the content is not limited', async () => {
     const result = await buildSingleFile(`# Hello world
 
 This is where I write my really long essay to the world. I will start off bing **super** important and then _slow down_ to a stop.
