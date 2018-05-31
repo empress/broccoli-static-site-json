@@ -72,7 +72,7 @@ describe('JSONAPI attributes', () => {
     expect(result.attributes).have.keys(['html', 'content', 'description']);
   });
 
-  it('should limit description to 200 characters', async () => {
+  it('should limit description to 260 characters', async () => {
     const result = await buildSingleFile(`# Hello world
 
 This is where I write my really long essay to the world. I will start off bing **super** important and then _slow down_ to a stop.
@@ -80,13 +80,13 @@ This is where I write my really long essay to the world. I will start off bing *
 ## Second point
 
 I really like programming. I could do this all day long without ever stooopping, no matter how long the word limit is`, {
-      contentTypes: ['html', 'content', 'description'],
-    });
+        contentTypes: ['html', 'content', 'description'],
+      });
 
     expect(result.attributes.description).to.have.lengthOf.at.most(260);
   });
 
-  it('should limit description to 200 characters', async () => {
+  it('should end the description with ... when the content is limited', async () => {
     const result = await buildSingleFile(`# Hello world
 
 This is where I write my really long essay to the world. I will start off bing **super** important and then _slow down_ to a stop.
@@ -94,10 +94,21 @@ This is where I write my really long essay to the world. I will start off bing *
 ## Second point
 
 I really like programming. I could do this all day long without ever stooopping, no matter how long the word limit is`, {
-      contentTypes: ['html', 'content', 'description'],
-    });
+        contentTypes: ['html', 'content', 'description'],
+      });
 
-    expect(result.attributes.description, 'does not end with ...').to.match(/\.\.\.$/);
+    expect(result.attributes.description).to.match(/\.\.\.$/);
+  });
+
+  it('should not end the description with ... when the content is not limited', async () => {
+    const result = await buildSingleFile(`# Hello world
+
+This is where I write my really long essay to the world. I will start off bing **super** important and then _slow down_ to a stop.
+`, {
+        contentTypes: ['html', 'content', 'description'],
+      });
+
+    expect(result.attributes.description).to.not.match(/\.\.\.$/);
   });
 
   it('should throw an error if there is an unknown content type', async () => {
