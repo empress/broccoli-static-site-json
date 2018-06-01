@@ -38,9 +38,56 @@ describe('JSONAPI attributes', () => {
     }
   });
 
-  it('should include title if the frontmatter is included but no options passed');
-  it('should not inlude any extra frontmatter that is not defined in attributes');
-  it('should allow you to specify attributes and for them to be included in the output');
+  it('should include title if the frontmatter is included but no options passed', async () => {
+    const result = await buildSingleFile(`---
+title: a lovely title
+---
+# Hello world`);
+
+    expect(result.attributes).have.property('title', 'a lovely title');
+  });
+
+  it('should not inlude any extra frontmatter that is not defined in attributes', async () => {
+    const result = await buildSingleFile(`---
+unknown: some unknown frontmatter
+---
+# Hello world`);
+
+    expect(result.attributes).to.not.have.property('unknown');
+  });
+
+  it('should allow you to specify attributes and for them to be included in the output', async () => {
+    const result = await buildSingleFile(`---
+known: some frontmatter
+---
+# Hello world`, {
+      attributes: ['known'],
+    });
+
+    expect(result.attributes).to.have.property('known', 'some frontmatter');
+  });
+
+  it('should make the frontmatter description take precedent if attribute description is specified', async () => {
+    const result = await buildSingleFile(`---
+description: use me instead
+---
+# Hello world`, {
+      attributes: ['description'],
+    });
+
+    expect(result.attributes).to.have.property('description', 'use me instead');
+  });
+
+  it('should make the frontmatter description take precedent if contentType description is specified', async () => {
+    const result = await buildSingleFile(`---
+description: use me instead
+---
+# Hello world`, {
+      contentTypes: ['description'],
+    });
+
+    expect(result.attributes).to.have.property('description', 'use me instead');
+  });
 
   it('should only include html and content with basic config', async () => {
     const result = await buildSingleFile('# Hello world');
