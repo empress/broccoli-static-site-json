@@ -1,5 +1,8 @@
 const { createBuilder, createTempDir } = require('broccoli-test-helper');
-const { expect } = require('chai');
+const chai = require('chai');
+chai.use(require('chai-datetime'));
+
+const { expect } = chai;
 
 const StaticSiteJson = require('../index');
 
@@ -171,5 +174,17 @@ This is where I write my really long essay to the world. I will start off bing *
 
     expect(error, 'Build did not error').to.be.ok;
     expect(error.message).to.equal('Unknown content type: faceyFace');
+  });
+
+  it('should include birthtime and mtime', async () => {
+    const now = new Date();
+    const result = await buildSingleFile('# Hello world', {
+      attributes: ['birthtime', 'mtime'],
+    });
+
+    const { birthtime, mtime } = result.attributes;
+
+    expect(new Date(birthtime)).to.equalDate(now);
+    expect(new Date(mtime)).to.equalDate(now);
   });
 });

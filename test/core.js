@@ -58,7 +58,7 @@ describe('core functionality', function () {
     await input.dispose();
   });
 
-  it('should allow you to specify the destination directoy with contentFolder', async () => {
+  it('should allow you to specify the destination directory with contentFolder', async () => {
     const input = await createTempDir();
 
     const subject = new StaticSiteJson(input.path(), {
@@ -80,7 +80,7 @@ describe('core functionality', function () {
     await input.dispose();
   });
 
-  it('should allow you to override the id a the JSON:API document with front-matter', async () => {
+  it('should allow you to override the id of the JSON:API document with front-matter', async () => {
     const input = await createTempDir();
 
     const subject = new StaticSiteJson(input.path());
