@@ -6,8 +6,8 @@ specified paths. It also supports the use of
 [front-matter](https://www.npmjs.com/package/front-matter) to define meta-data for each markdown
 file.
 
-It is used for the following official Ember Documentation projects: 
-- [Ember Guides App](https://github.com/ember-learn/guides-app) 
+It is used for the following official Ember Documentation projects:
+- [Ember Guides App](https://github.com/ember-learn/guides-app)
 - [Ember Deprecations App](https://github.com/ember-learn/deprecation-app)
 
 ## Basic Usage
@@ -53,6 +53,90 @@ module.exports = function(defaults) {
 
 To see a more in-depth implementation using an in-repo addon check out the [Ember Guides
 App](https://github.com/ember-learn/guides-app).
+
+## Using with Fastboot and Prember
+If you would like to also get the benefits of using [Fastboot](https://github.com/ember-fastboot/ember-cli-fastboot) and pre-rendering with [Prember](https://github.com/ef4/prember) you **must** create an in-repo addon.
+
+This is straightforward to do, first run `ember generate in-repo-addon your-addon-name`.
+
+It will create a new directory in your `lib` directory with two files `index.json` and `package.json`.
+
+The `index.json` should look very much like the example above using the `treeForPublic` hook to add the files but with the inclusion also of the pre-rendered urls using.
+
+```javascript
+'use strict';
+
+const StaticSiteJson = require('broccoli-static-site-json');
+
+const contentsJson = StaticSiteJson('content');
+
+module.exports = {
+  name: require('./package').name,
+
+  isDevelopingAddon() {
+    return true;
+  },
+
+  treeForPublic() {
+    return contentsJson;
+  }
+};
+```
+
+### Fastboot
+This should already be enough for Fastboot to work, which can be installed by
+
+```
+ember install ember-cli-Fastboot
+```
+
+Now running `ember serve` should include the `App is being served by FastBoot` and a `200` successful status code when hitting a valid URL.
+
+For more information [read the full Fastboot documentation](https://github.com/ember-fastboot/ember-cli-fastboot).
+
+### Prember
+Prember also needs to be told which URLs to pre-render, which can also be included in the `index.js` of the in-repo addon using the `urlsForPrember` hook.
+
+Here is a simple example of traversing a directory and adding the paths (based on the same content json as above).
+
+```javascript
+'use strict';
+
+const StaticSiteJson = require('broccoli-static-site-json');
+const walkSync = require('walk-sync');
+const { extname } = require('path');
+
+const contentsJson = StaticSiteJson('content');
+
+const contentsPaths = walkSync('content').
+  filter(path => extname(path) === '.md')
+  .map(path => path.replace(/\.md/, ''))
+  .map(path => path.replace(/\/index$/, ''));
+
+const urls = ['/'];
+
+contentsPaths.forEach((file) => {
+  urls.push(`/${file}`)
+});
+
+module.exports = {
+  name: require('./package').name,
+
+  isDevelopingAddon() {
+    return true;
+  },
+
+  treeForPublic() {
+    return contentsJson;
+  },
+
+  urlsForPrember(distDir, visit) {
+    return urls;
+  }
+};
+```
+
+For more information [read the full Prember documentation](https://github.com/ef4/prember).
 
 ## Detailed documentation
 
