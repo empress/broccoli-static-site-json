@@ -136,6 +136,34 @@ module.exports = {
 };
 ```
 
+The last thing is to add `prember-plugin` to the in-app repo `package.json`
+
+```
+{
+  "name": "your-addon-name",
+  "keywords": [
+    "ember-addon",
+    "prember-plugin"
+  ]
+}
+```
+
+With that added you should be able to pre-render your content.
+
+If you want to test in development you can check by setting the `PREMBER` environment variable.
+
+```
+PREMBER=true ember serve
+```
+
+Note: you'll also need to install the `prember-middleware` With
+
+```
+ember install prember-middleware
+```
+
+Then the logs should include a mention that the HTML was served with prember.
+
 For more information [read the full Prember documentation](https://github.com/ef4/prember).
 
 ## Detailed documentation
