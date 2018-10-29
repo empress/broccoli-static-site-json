@@ -6,8 +6,8 @@ specified paths. It also supports the use of
 [front-matter](https://www.npmjs.com/package/front-matter) to define meta-data for each markdown
 file.
 
-It is used for the following official Ember Documentation projects: 
-- [Ember Guides App](https://github.com/ember-learn/guides-app) 
+It is used for the following official Ember Documentation projects:
+- [Ember Guides App](https://github.com/ember-learn/guides-app)
 - [Ember Deprecations App](https://github.com/ember-learn/deprecation-app)
 
 ## Basic Usage
@@ -53,6 +53,39 @@ module.exports = function(defaults) {
 
 To see a more in-depth implementation using an in-repo addon check out the [Ember Guides
 App](https://github.com/ember-learn/guides-app).
+
+## Using with Ember Fastboot and Prember
+[Prember](https://github.com/ef4/prember) allows you to pre-render any list of URLs into static HTML files at build time using [Ember Fastboot](https://www.ember-fastboot.com/). Prember is recommended if you are trying to deploy an Ember-based static site using `broccoli-static-site-json`.
+
+If you would like to use `broccoli-static-site-json` with Prember you must make sure that your static json tree is available to the Ember app at build time. The only way to do this is to build the `broccoli-static-site-json` tree in an **Ember Addon** and make sure it is exposed via the `treeForPublic()` hook of that addon. The quickest and easiest way to start working with an Ember addon would be to create an in-repo addon. To create an in-repo addon first run
+
+```bash
+ember generate in-repo-addon your-addon-name
+```
+
+It will create a new directory `lib/your-addon-name` with two files: `index.json` and `package.json`.
+
+You should update the `index.json` file and add your `broccoli-static-site-json` implementation, then you should expose the resulting tree using the `treeForPublic` hook. You can see an example of how to do this below:
+
+```javascript
+'use strict';
+
+const StaticSiteJson = require('broccoli-static-site-json');
+
+const contentsJson = StaticSiteJson('content');
+
+module.exports = {
+  name: require('./package').name,
+
+  isDevelopingAddon() {
+    return true;
+  },
+
+  treeForPublic() {
+    return contentsJson;
+  }
+};
+```
 
 ## Detailed documentation
 
