@@ -54,14 +54,18 @@ module.exports = function(defaults) {
 To see a more in-depth implementation using an in-repo addon check out the [Ember Guides
 App](https://github.com/ember-learn/guides-app).
 
-## Using with Fastboot and Prember
-If you would like to also get the benefits of using [Fastboot](https://github.com/ember-fastboot/ember-cli-fastboot) and pre-rendering with [Prember](https://github.com/ef4/prember) you **must** create an in-repo addon.
+## Using with Ember Fastboot and Prember
+[Prember](https://github.com/ef4/prember) allows you to pre-render any list of URLs into static HTML files at build time using [Ember Fastboot](https://www.ember-fastboot.com/). Prember is recommended if you are trying to deploy an Ember-based static site using `broccoli-static-site-json`.
 
-This is straightforward to do, first run `ember generate in-repo-addon your-addon-name`.
+If you would like to use `broccoli-static-site-json` with Prember you must make sure that your static json tree is available to the Ember app at build time. The only way to do this is to build the `broccoli-static-site-json` tree in an **Ember Addon** and make sure it is exposed via the `treeForPublic()` hook of that addon. The quickest and easiest way to start working with an Ember addon would be to create an in-repo addon. To create an in-repo addon first run
 
-It will create a new directory in your `lib` directory with two files `index.json` and `package.json`.
+```bash
+ember generate in-repo-addon your-addon-name
+```
 
-The `index.json` should look very much like the example above using the `treeForPublic` hook to add the files but with the inclusion also of the pre-rendered urls using.
+It will create a new directory `lib/your-addon-name` with two files: `index.json` and `package.json`.
+
+You should update the `index.json` file and add your `broccoli-static-site-json` implementation, then you should expose the resulting tree using the `treeForPublic` hook. You can see an example of how to do this below:
 
 ```javascript
 'use strict';
@@ -82,89 +86,6 @@ module.exports = {
   }
 };
 ```
-
-### Fastboot
-This should already be enough for Fastboot to work, which can be installed by
-
-```
-ember install ember-cli-Fastboot
-```
-
-Now running `ember serve` should include the `App is being served by FastBoot` and a `200` successful status code when hitting a valid URL.
-
-For more information [read the full Fastboot documentation](https://github.com/ember-fastboot/ember-cli-fastboot).
-
-### Prember
-Prember also needs to be told which URLs to pre-render, which can also be included in the `index.js` of the in-repo addon using the `urlsForPrember` hook.
-
-Here is a simple example of traversing a directory and adding the paths (based on the same content json as above).
-
-```javascript
-'use strict';
-
-const StaticSiteJson = require('broccoli-static-site-json');
-const walkSync = require('walk-sync');
-const { extname } = require('path');
-
-const contentsJson = StaticSiteJson('content');
-
-const contentsPaths = walkSync('content').
-  filter(path => extname(path) === '.md')
-  .map(path => path.replace(/\.md/, ''))
-  .map(path => path.replace(/\/index$/, ''));
-
-const urls = ['/'];
-
-contentsPaths.forEach((file) => {
-  urls.push(`/${file}`)
-});
-
-module.exports = {
-  name: require('./package').name,
-
-  isDevelopingAddon() {
-    return true;
-  },
-
-  treeForPublic() {
-    return contentsJson;
-  },
-
-  urlsForPrember(distDir, visit) {
-    return urls;
-  }
-};
-```
-
-The last thing is to add `prember-plugin` to the in-app repo `package.json`
-
-```
-{
-  "name": "your-addon-name",
-  "keywords": [
-    "ember-addon",
-    "prember-plugin"
-  ]
-}
-```
-
-With that added you should be able to pre-render your content.
-
-If you want to test in development you can check by setting the `PREMBER` environment variable.
-
-```
-PREMBER=true ember serve
-```
-
-Note: you'll also need to install the `prember-middleware` With
-
-```
-ember install prember-middleware
-```
-
-Then the logs should include a mention that the HTML was served with prember.
-
-For more information [read the full Prember documentation](https://github.com/ef4/prember).
 
 ## Detailed documentation
 
