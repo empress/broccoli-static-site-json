@@ -4,8 +4,6 @@ const yaml = require('js-yaml');
 const mkdirp = require('mkdirp');
 const _ = require('lodash');
 
-const readMarkdownFolder = require('./lib/readMarkdownFolder');
-
 const {
   existsSync,
   readFileSync,
@@ -17,6 +15,8 @@ const {
   dirname,
   join,
 } = require('path');
+
+const readMarkdownFolder = require('./lib/readMarkdownFolder');
 
 const TableOfContentsSerializer = new Serializer('page', {
   id: 'url',
