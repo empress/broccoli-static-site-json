@@ -15,7 +15,7 @@ matrix:
 
 env:
   global:
-    - CC_TEST_REPORTER_ID=a423f9dc08076bee9055623718f9f3cfecbc3d36b9fd8681ee8297d6398d7263
+    - CC_TEST_REPORTER_ID=e86c6de11dd97ad1777b3212cddc0367b150816025083150839f687b7fbce7f9
 
 before_install:
   - npm config --global set spin false
