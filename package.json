@@ -2,35 +2,36 @@
   "name": "broccoli-static-site-json",
   "version": "2.1.2",
   "description": "Broccoli based static site generator that outputs a JSON:API representation of your Markdown files",
+  "repository": "https://github.com/empress/broccoli-static-site-json",
+  "license": "MIT",
+  "author": "Chris Manson <chris.manson@simplabs.com>",
   "main": "index.js",
   "scripts": {
+    "coverage": "NODE_ENV=test nyc -a report --reporter=text-lcov mocha > coverage/lcov.info",
+    "lint:js": "eslint .",
     "test": "NODE_ENV=test nyc -a mocha --recursive",
-    "test-watch": "NODE_ENV=test mocha --recursive -w --reporter min",
-    "coverage": "NODE_ENV=test nyc -a report --reporter=text-lcov mocha > coverage/lcov.info"
-  },
-  "author": "Chris Manson <chris@stonecircle.io>",
-  "repository": "https://github.com/stonecircle/broccoli-static-site-json",
-  "license": "MIT",
-  "devDependencies": {
-    "broccoli": "^1.1.4",
-    "broccoli-test-helper": "^1.2.0",
-    "chai": "^4.1.2",
-    "eslint": "^4.10.0",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.8.0",
-    "mocha": "^5.0.4",
-    "nyc": "^11.4.1"
+    "test-watch": "NODE_ENV=test mocha --recursive -w --reporter min"
   },
   "dependencies": {
-    "broccoli-plugin": "^1.3.0",
+    "broccoli-plugin": "^1.3.1",
     "debug": "^3.1.0",
-    "html2plaintext": "^2.0.1",
-    "js-yaml": "^3.10.0",
-    "jsonapi-serializer": "^3.5.5",
-    "lodash": "^4.17.4",
+    "html2plaintext": "^2.1.2",
+    "js-yaml": "^3.12.0",
+    "jsonapi-serializer": "^3.6.4",
+    "lodash": "^4.17.11",
     "mkdirp": "^0.5.1",
-    "showdown": "^1.8.6",
-    "walk-sync": "^0.3.2",
+    "showdown": "^1.9.0",
+    "walk-sync": "^1.0.1",
     "yaml-front-matter": "^3.4.0"
+  },
+  "devDependencies": {
+    "broccoli": "^2.0.1",
+    "broccoli-test-helper": "^2.0.0",
+    "chai": "^4.2.0",
+    "eslint": "^5.11.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "mocha": "^5.2.0",
+    "nyc": "^13.1.0"
   }
 }
