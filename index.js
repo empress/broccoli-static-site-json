@@ -1,20 +1,14 @@
-const Plugin = require('broccoli-plugin');
-const { Serializer } = require('jsonapi-serializer');
-const yaml = require('js-yaml');
-const mkdirp = require('mkdirp');
 const _ = require('lodash');
-
+const { Serializer } = require('jsonapi-serializer');
+const mkdirp = require('mkdirp');
+const Plugin = require('broccoli-plugin');
+const yaml = require('js-yaml');
+const { dirname, join } = require('path');
 const {
   existsSync,
   readFileSync,
   writeFileSync,
 } = require('fs');
-
-const {
-  basename,
-  dirname,
-  join,
-} = require('path');
 
 const readMarkdownFolder = require('./lib/readMarkdownFolder');
 
