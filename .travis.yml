@@ -28,6 +28,10 @@ before_script:
   - ./cc-test-reporter before-build
   - mkdir coverage
 
+script:
+  - npm run lint:js
+  - npm test
+
 after_script:
   - npm run coverage
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

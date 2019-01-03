@@ -127,8 +127,8 @@ This is where I write my really long essay to the world. I will start off bing *
 ## Second point
 
 I really like programming. I could do this all day long without ever stooopping, no matter how long the word limit is`, {
-        contentTypes: ['html', 'content', 'description'],
-      });
+      contentTypes: ['html', 'content', 'description'],
+    });
 
     expect(result.attributes.description).to.have.lengthOf.at.most(260);
   });
@@ -141,8 +141,8 @@ This is where I write my really long essay to the world. I will start off bing *
 ## Second point
 
 I really like programming. I could do this all day long without ever stooopping, no matter how long the word limit is`, {
-        contentTypes: ['html', 'content', 'description'],
-      });
+      contentTypes: ['html', 'content', 'description'],
+    });
 
     expect(result.attributes.description).to.match(/\.\.\.$/);
   });
@@ -152,8 +152,8 @@ I really like programming. I could do this all day long without ever stooopping,
 
 This is where I write my really long essay to the world. I will start off bing **super** important and then _slow down_ to a stop.
 `, {
-        contentTypes: ['html', 'content', 'description'],
-      });
+      contentTypes: ['html', 'content', 'description'],
+    });
 
     expect(result.attributes.description).to.not.match(/\.\.\.$/);
   });
