@@ -39,7 +39,7 @@ describe('basic tests', function () {
               },
             });
           })
-          .finally(() => {
+          .then(() => {
             return Promise.all([
               output.dispose(),
               input.dispose(),
