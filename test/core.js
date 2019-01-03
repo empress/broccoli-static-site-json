@@ -99,7 +99,7 @@ id: face
     const folderOutput = output.read();
 
     expect(folderOutput.content).to.have.property('index.json');
-    expect(folderOutput.content).to.have.property('other-id.json');
+    expect(folderOutput.content).to.have.property('face.json');
 
     expect(JSON.parse(folderOutput.content['index.json']).data).to.deep.include({
       id: 'index',
@@ -109,7 +109,7 @@ id: face
       },
     });
 
-    expect(JSON.parse(folderOutput.content['other-id.json']).data).to.deep.include({
+    expect(JSON.parse(folderOutput.content['face.json']).data).to.deep.include({
       id: 'face',
       attributes: {
         content: '\n# Hello face world', // TODO: should it have this `\n` here?

@@ -122,7 +122,7 @@ class BroccoliStaticSiteJson extends Plugin {
 
       const serialized = this.contentSerializer.serialize(file);
 
-      writeFileSync(join(this.outputPath, this.options.contentFolder, `${join(dirname(file.path), basename(file.path, '.md'))}.json`), JSON.stringify(serialized));
+      writeFileSync(join(this.outputPath, this.options.contentFolder, `${file.id.toString()}.json`), JSON.stringify(serialized));
     });
 
     if (this.options.collections) {
