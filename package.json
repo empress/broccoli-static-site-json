@@ -2,7 +2,7 @@
   "name": "broccoli-static-site-json",
   "version": "2.1.2",
   "description": "Broccoli based static site generator that outputs a JSON:API representation of your Markdown files",
-  "repository": "https://github.com/stonecircle/broccoli-static-site-json",
+  "repository": "https://github.com/empress/broccoli-static-site-json",
   "license": "MIT",
   "author": "Chris Manson <chris.manson@simplabs.com>",
   "main": "index.js",
