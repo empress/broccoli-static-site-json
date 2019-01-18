@@ -45,7 +45,7 @@ module.exports = function(defaults) {
     // Add options here
   });
 
-  let contentsJson = StaticSiteJson('content');
+  let contentsJson = new StaticSiteJson('content');
 
   return new BroccoliMergeTrees([app.toTree(), contentsJson]);
 };
@@ -72,7 +72,7 @@ You should update the `index.json` file and add your `broccoli-static-site-json`
 
 const StaticSiteJson = require('broccoli-static-site-json');
 
-const contentsJson = StaticSiteJson('content');
+const contentsJson = new StaticSiteJson('content');
 
 module.exports = {
   name: require('./package').name,
