@@ -1,4 +1,10 @@
 
+3.1.0 / 2019-02-05
+==================
+
+  * properly supporting input nodes instead of just "folders" #19 from @mansona
+  * fix example usage #18 from @efx
+
 3.0.0 / 2019-01-03
 ==================
 
