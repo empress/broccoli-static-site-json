@@ -1,6 +1,6 @@
 {
   "name": "broccoli-static-site-json",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Broccoli based static site generator that outputs a JSON:API representation of your Markdown files",
   "repository": "https://github.com/empress/broccoli-static-site-json",
   "license": "MIT",
