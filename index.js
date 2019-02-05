@@ -43,7 +43,6 @@ class BroccoliStaticSiteJson extends Plugin {
     super([folder], options);
 
     this.options = _.assign({}, {
-      folder,
       contentFolder: 'content',
       contentTypes: ['html', 'content'],
     }, options);
@@ -87,48 +86,50 @@ class BroccoliStaticSiteJson extends Plugin {
     // build pages file
     let pages;
 
-    if (existsSync(join(this.options.folder, 'pages.yml'))) {
-      pages = yaml.safeLoad(readFileSync(join(this.options.folder, 'pages.yml'), 'utf8'));
-    } else if (existsSync(join(this.options.folder, 'pages.json'))) {
-      // eslint-disable-next-line
-      pages = require(join(this.options.folder, 'pages.json'));
-    }
-
-    if (pages) {
-      // add the parent id to each subpage
-      subpageUrls(null, null, pages);
-
-      writeFileSync(join(this.outputPath, this.options.contentFolder, 'pages.json'), JSON.stringify(TableOfContentsSerializer.serialize(pages)));
-    }
-
-    // build the tree of MD files
-    const fileData = readMarkdownFolder(this.options.folder, this.options);
-
-    if (!existsSync(join(this.outputPath, this.options.contentFolder))) {
-      mkdirp.sync(join(this.outputPath, this.options.contentFolder));
-    }
-
-    fileData.forEach((file) => {
-      const directory = dirname(join(this.outputPath, this.options.contentFolder, file.path));
-      if (!existsSync(directory)) {
-        mkdirp.sync(dirname(join(this.outputPath, this.options.contentFolder, file.path)));
+    this.inputPaths.forEach((folder) => {
+      if (existsSync(join(folder, 'pages.yml'))) {
+        pages = yaml.safeLoad(readFileSync(join(folder, 'pages.yml'), 'utf8'));
+      } else if (existsSync(join(folder, 'pages.json'))) {
+        // eslint-disable-next-line
+        pages = require(join(folder, 'pages.json'));
       }
 
-      const serialized = this.contentSerializer.serialize(file);
+      if (pages) {
+        // add the parent id to each subpage
+        subpageUrls(null, null, pages);
 
-      writeFileSync(join(this.outputPath, this.options.contentFolder, `${file.id.toString()}.json`), JSON.stringify(serialized));
-    });
+        writeFileSync(join(this.outputPath, this.options.contentFolder, 'pages.json'), JSON.stringify(TableOfContentsSerializer.serialize(pages)));
+      }
 
-    if (this.options.collections) {
-      this.options.collections.forEach((collection) => {
-        const collectionFileData = readMarkdownFolder(collection.src, this.options);
+      // build the tree of MD files
+      const fileData = readMarkdownFolder(folder, this.options);
 
-        writeFileSync(
-          join(this.outputPath, this.options.contentFolder, collection.output),
-          JSON.stringify(this.contentSerializer.serialize(collectionFileData))
-        );
+      if (!existsSync(join(this.outputPath, this.options.contentFolder))) {
+        mkdirp.sync(join(this.outputPath, this.options.contentFolder));
+      }
+
+      fileData.forEach((file) => {
+        const directory = dirname(join(this.outputPath, this.options.contentFolder, file.path));
+        if (!existsSync(directory)) {
+          mkdirp.sync(dirname(join(this.outputPath, this.options.contentFolder, file.path)));
+        }
+
+        const serialized = this.contentSerializer.serialize(file);
+
+        writeFileSync(join(this.outputPath, this.options.contentFolder, `${file.id.toString()}.json`), JSON.stringify(serialized));
       });
-    }
+
+      if (this.options.collections) {
+        this.options.collections.forEach((collection) => {
+          const collectionFileData = readMarkdownFolder(collection.src, this.options);
+
+          writeFileSync(
+            join(this.outputPath, this.options.contentFolder, collection.output),
+            JSON.stringify(this.contentSerializer.serialize(collectionFileData))
+          );
+        });
+      }
+    });
   }
 }
 
