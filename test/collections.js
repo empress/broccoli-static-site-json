@@ -1,3 +1,4 @@
+const Funnel = require('broccoli-funnel');
 const { createBuilder, createTempDir } = require('broccoli-test-helper');
 const { expect } = require('chai');
 
@@ -60,7 +61,6 @@ title: more words
 # When one word is not enough`,
     }, {
       collections: [{
-        src: `${input.path()}/content`,
         output: 'all.json',
       }],
     });
@@ -94,7 +94,6 @@ id: 3
 # When one word is not enough`,
     }, {
       collections: [{
-        src: `${input.path()}/content`,
         output: 'all.json',
       }],
     });
@@ -111,7 +110,108 @@ id: 3
     expect(files['all.json'].find(obj => obj.id === '3')).to.be.ok;
   });
 
-  it('should allow you to define a collection and for the specified content folder to be exported as an single JSONAPI array response');
+  it('should allow you to define a collection and for the specified content folder to be exported as an single JSONAPI array response', async () => {
+    const subject = new StaticSiteJson(input.path(), {
+      type: 'page',
+      collections: [{
+        output: 'all.json',
+      }],
+    });
+
+    output = createBuilder(subject);
+
+    input.write({
+      'index.md': `---
+title: a lovely title
+---
+# Hello world`,
+      'project.md': `---
+title: a less lovely title
+---
+# Goodbye world`,
+      'double-word.md': `---
+title: more words
+---
+# When one word is not enough`,
+    });
+
+    await output.build();
+
+    const folderOutput = output.read();
+
+    expect(JSON.parse(folderOutput.content['all.json']).data).to.deep.include({
+      type: 'pages',
+      id: 'double-word',
+      attributes: {
+        html: '<h1 id="whenonewordisnotenough">When one word is not enough</h1>',
+        content: '\n# When one word is not enough',
+        title: 'more words',
+      },
+    });
+    expect(JSON.parse(folderOutput.content['all.json']).data).to.deep.include({
+      type: 'pages',
+      id: 'index',
+      attributes: {
+        html: '<h1 id="helloworld">Hello world</h1>',
+        content: '\n# Hello world',
+        title: 'a lovely title',
+      },
+    });
+    expect(JSON.parse(folderOutput.content['all.json']).data).to.deep.include({
+      type: 'pages',
+      id: 'project',
+      attributes: {
+        html: '<h1 id="goodbyeworld">Goodbye world</h1>',
+        content: '\n# Goodbye world',
+        title: 'a less lovely title',
+      },
+    });
+  });
+
+  it('should work if a broccoli plugin is passed in instead of a folder', async () => {
+    const mdFiles = new Funnel(input.path(), { destDir: 'face' });
+
+    const subject = new StaticSiteJson(mdFiles, {
+      type: 'page',
+      collections: [{
+        output: 'all.json',
+      }],
+    });
+
+    output = createBuilder(subject);
+
+    input.write({
+      'index.md': `---
+title: a lovely title
+---
+# Hello world`,
+      'project.md': `---
+title: a less lovely title
+---
+# Goodbye world`,
+      'double-word.md': `---
+title: more words
+---
+# When one word is not enough`,
+    });
+
+    await output.build();
+
+    const folderOutput = output.read();
+
+    const allData = JSON.parse(folderOutput.content['all.json']).data;
+
+    ['double-word', 'index', 'project'].forEach((id) => {
+      const allObject = allData.find(obj => obj.id.endsWith(id));
+
+      expect(allObject).to.be.ok;
+
+      const individualObject = JSON.parse(folderOutput.content.face[`${id}.json`]);
+
+      expect(allObject).to.deep.equal(individualObject.data);
+    });
+  });
+
   it('should allow you to define multiple collections in the one StaticSiteJson definition');
   it('should use the type definition of the StaticSiteJson in the collection');
 });
