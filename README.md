@@ -100,6 +100,25 @@ const jsonTree = new StaticSiteJson('content', {
 });
 ```
 
+### Type
+By default this plugin will use the name of the folder that you're building as the _JSON:API type_ for example if you had the following configuration:
+
+```javascript
+const jsonTree = new StaticSiteJson('author');
+```
+
+it would load the markdown in the folder `author` and each JSON:API document would have a type of `authors`.
+
+If you want to specify the type directly you can in the options:
+
+```javascript
+const jsonTree = new StaticSiteJson('really-strange_placeToPut_some_FILES', {
+  type: 'author'
+});
+```
+
+**Note:** just like the folder example the type will be automatically pluralised.
+
 ### Collections
 Collections are a convenient way of placing multiple markdown files (found under the same folder) in
 a single JSON:API document. This can be used when wanting to retrieve multiple documents at any one
