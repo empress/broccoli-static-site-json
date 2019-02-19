@@ -1,4 +1,12 @@
 
+3.2.0 / 2019-02-19
+==================
+
+  * deprecating collections.src #20 from @mansona
+  * adding tests for collections
+  * adding test for broccoli plugin as an input
+  * documentation: adding docs for `type` attribute
+
 3.1.0 / 2019-02-05
 ==================
 
