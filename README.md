@@ -127,14 +127,12 @@ time (`findAll`).
 ```javascript
 new StaticSiteJson(`content`, {
   collections: [{
-    src: `content`,
     output: `allContent.json`,
   }]
 })
 ```
 
 * `options`
-  * `src`: The folder of the markdown files intended for the same collection.
   * `output`: The output file name of the collection JSON:API document.
 
 ### Relationships
