@@ -121,7 +121,11 @@ class BroccoliStaticSiteJson extends Plugin {
 
       if (this.options.collections) {
         this.options.collections.forEach((collection) => {
-          const collectionFileData = readMarkdownFolder(collection.src, this.options);
+          if (collection.src) {
+            // eslint-disable-next-line no-console
+            console.warn(`Collection with output ${collection.output}. Using 'collection.src' is deprecated. We now just use the input folder directly.`);
+          }
+          const collectionFileData = readMarkdownFolder(collection.src || folder, this.options);
 
           writeFileSync(
             join(this.outputPath, this.options.contentFolder, collection.output),
