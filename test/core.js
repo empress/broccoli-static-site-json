@@ -1,3 +1,4 @@
+const Funnel = require('broccoli-funnel');
 const { createBuilder, createTempDir } = require('broccoli-test-helper');
 const { expect } = require('chai');
 
@@ -30,6 +31,40 @@ describe('core functionality', function () {
     const input = await createTempDir();
 
     const subject = new StaticSiteJson(input.path());
+    const output = createBuilder(subject);
+
+    input.write({
+      'index.md': '# Hello world',
+      sub: {
+        'index.md': '# Hello sub world',
+      },
+    });
+
+    await output.build();
+
+    const folderOutput = output.read();
+
+    expect(folderOutput.content).to.have.property('index.json');
+    expect(folderOutput.content.sub).to.have.property('index.json');
+
+    expect(JSON.parse(folderOutput.content.sub['index.json']).data).to.deep.include({
+      id: 'sub/index',
+      attributes: {
+        content: '# Hello sub world',
+        html: '<h1 id="hellosubworld">Hello sub world</h1>',
+      },
+    });
+
+    await output.dispose();
+    await input.dispose();
+  });
+
+  it('should work with a broccoli plugin as an input', async () => {
+    const input = await createTempDir();
+
+    const mdFiles = new Funnel(input.path());
+
+    const subject = new StaticSiteJson(mdFiles);
     const output = createBuilder(subject);
 
     input.write({
