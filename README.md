@@ -123,22 +123,34 @@ const jsonTree = new StaticSiteJson('really-strange_placeToPut_some_FILES', {
 
 **Note:** just like the folder example the type will be automatically pluralised.
 
-### Collections
-
-Collections are a convenient way of placing multiple markdown files (found under the same folder) in
-a single JSON:API document. This can be used when wanting to retrieve multiple documents at any one
-time (`findAll`).
+### Collate
+If you want to have the ability to query all of your content at once you can do
+that by **collating** content together in a collection. This will place all of
+your markdown files into a single JSON:API document and can be used for
+`findAll` queries. To turn on collation you just need to set the `collate`
+attribute to `true`
 
 ```javascript
 new StaticSiteJson(`content`, {
-  collections: [{
-    output: `allContent.json`,
-  }]
+  collate: true,
 })
 ```
 
-* `options`
-  * `output`: The output file name of the collection JSON:API document.
+* `collate`: Boolean - Default: false
+
+### CollationFileName
+If you have turned on collation by default BroccoliStaticSiteJson will  output
+the collated documents with the file name `all.json`. If you want to be able to
+edit this default output file you can set the `collationFileName`.
+
+```javascript
+new StaticSiteJson(`content`, {
+  collate: true,
+  collationFileName: 'articles.json'
+})
+```
+
+* `collationFileName`: String - Default: `all.json`
 
 ### Relationships
 

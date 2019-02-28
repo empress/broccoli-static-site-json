@@ -1,14 +1,11 @@
 const Funnel = require('broccoli-funnel');
-const sinon = require('sinon');
-
 const { createBuilder, createTempDir } = require('broccoli-test-helper');
 const { expect } = require('chai');
 
-const StaticSiteJson = require('../index');
+const StaticSiteJson = require('../../index');
 
 let output;
 let input;
-let warnSpy;
 
 async function buildFiles(files, options) {
   input.write({
@@ -31,15 +28,12 @@ async function buildFiles(files, options) {
   return outputFiles;
 }
 
-describe('collections', () => {
+describe('deprecated collections', () => {
   beforeEach(async () => {
     input = await createTempDir();
-    warnSpy = sinon.spy(console, 'warn');
   });
 
   afterEach(async () => {
-    // eslint-disable-next-line no-console
-    console.warn.restore();
     try {
       await input.dispose();
     } finally {
@@ -66,7 +60,9 @@ title: more words
 ---
 # When one word is not enough`,
     }, {
-      collate: true
+      collections: [{
+        output: 'all.json',
+      }],
     });
 
     expect(files['index.json']).to.have.property('id', 'index');
@@ -97,7 +93,9 @@ id: 3
 ---
 # When one word is not enough`,
     }, {
-      collate: true,
+      collections: [{
+        output: 'all.json',
+      }],
     });
 
     expect(files).to.have.property('1.json');
@@ -112,59 +110,12 @@ id: 3
     expect(files['all.json'].find(obj => obj.id === '3')).to.be.ok;
   });
 
-  it('tell you that that the collections attribute is deprecated', async () => {
-    const subject = new StaticSiteJson(input.path(), {
-      type: 'page',
-      collections: [{
-        output: 'all.json',
-      }],
-    });
-
-    output = createBuilder(subject);
-
-    input.write({
-      'index.md': `---
-title: a lovely title
----
-# Hello world`,
-    });
-
-    await output.build();
-
-    // assert that it was called with the correct value
-    expect(warnSpy.getCall(0).args[0]).to.eql('Using `collection` is deprecated. Please use collate and collationFileName instead.');
-  });
-
-  it('will warn you that that multiple collections will not be supported in the next version', async () => {
-    const subject = new StaticSiteJson(input.path(), {
-      type: 'page',
-      collections: [{
-        output: 'all.json',
-      }, {
-        output: 'another.json',
-      }],
-    });
-
-    output = createBuilder(subject);
-
-    input.write({
-      'index.md': `---
-title: a lovely title
----
-# Hello world`,
-    });
-
-    await output.build();
-
-    // assert that it was called with the correct value
-    expect(warnSpy.getCall(0).args[0]).to.eql('Using `collection` is deprecated. Please use collate and collationFileName instead.');
-    expect(warnSpy.getCall(1).args[0]).to.eql('Multiple collections will be removed in the next major release.');
-  });
-
   it('should allow you to define a collection and for the specified content folder to be exported as an single JSONAPI array response', async () => {
     const subject = new StaticSiteJson(input.path(), {
       type: 'page',
-      collate: true,
+      collections: [{
+        output: 'all.json',
+      }],
     });
 
     output = createBuilder(subject);
@@ -222,7 +173,9 @@ title: more words
 
     const subject = new StaticSiteJson(mdFiles, {
       type: 'page',
-      collate: true,
+      collections: [{
+        output: 'all.json',
+      }],
     });
 
     output = createBuilder(subject);
@@ -258,6 +211,4 @@ title: more words
       expect(allObject).to.deep.equal(individualObject.data);
     });
   });
-
-  it('should use the type definition of the StaticSiteJson in the collection');
 });

@@ -45,12 +45,25 @@ class BroccoliStaticSiteJson extends Plugin {
     this.options = _.assign({}, {
       contentFolder: 'content',
       contentTypes: ['html', 'content'],
+      collationFileName: 'all.json',
     }, options);
 
     const unsupportedContentTypes = _.difference(this.options.contentTypes, supportedContentTypes);
 
     if (unsupportedContentTypes.length) {
       throw new Error(`Unknown content type: ${unsupportedContentTypes[0]}`);
+    }
+
+    if (options && options.collate && options.collections) {
+      throw new Error('Defining `collections` and `collate` is not supported. Please just use `collate`');
+    } else if (options && options.collections) {
+      // eslint-disable-next-line no-console
+      console.warn('Using `collection` is deprecated. Please use collate and collationFileName instead.');
+
+      if (options.collections.length > 1) {
+        // eslint-disable-next-line no-console
+        console.warn('Multiple collections will be removed in the next major release.');
+      }
     }
 
     const serializerOptions = {
@@ -119,11 +132,21 @@ class BroccoliStaticSiteJson extends Plugin {
         writeFileSync(join(this.outputPath, this.options.contentFolder, `${file.id.toString()}.json`), JSON.stringify(serialized));
       });
 
+      if (this.options.collate) {
+        const collectionFileData = readMarkdownFolder(folder, this.options);
+
+        writeFileSync(
+          join(this.outputPath, this.options.contentFolder, this.options.collationFileName),
+          JSON.stringify(this.contentSerializer.serialize(collectionFileData))
+        );
+      }
+
+      // TODO: deprecated - delete on next major release
       if (this.options.collections) {
         this.options.collections.forEach((collection) => {
           if (collection.src) {
             // eslint-disable-next-line no-console
-            console.warn(`Collection with output ${collection.output}. Using 'collection.src' is deprecated. We now just use the input folder directly.`);
+            console.error(`Collection with output ${collection.output}. Using 'collection.src' is deprecated. We now just use the input folder directly.`);
           }
           const collectionFileData = readMarkdownFolder(collection.src || folder, this.options);
 
