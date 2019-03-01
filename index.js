@@ -46,6 +46,7 @@ class BroccoliStaticSiteJson extends Plugin {
       contentFolder: 'content',
       contentTypes: ['html', 'content'],
       collationFileName: 'all.json',
+      pageSize: 10,
     }, options);
 
     const unsupportedContentTypes = _.difference(this.options.contentTypes, supportedContentTypes);
@@ -135,14 +136,48 @@ class BroccoliStaticSiteJson extends Plugin {
       if (this.options.collate) {
         const collectionFileData = readMarkdownFolder(folder, this.options);
 
-        writeFileSync(
-          join(this.outputPath, this.options.contentFolder, this.options.collationFileName),
-          JSON.stringify(this.contentSerializer.serialize(collectionFileData))
-        );
+        if (this.options.paginate) {
+          const contentPages = _.chunk(collectionFileData, this.options.pageSize);
+
+          contentPages.forEach((pageData, index) => {
+            const serializedPageData = this.contentSerializer.serialize(pageData);
+            let fileName;
+
+            const fileNameMatch = this.options.collationFileName.match(/(.*)\.json$/);
+
+            if (fileNameMatch) {
+              fileName = `${fileNameMatch[1]}-${index}.json`;
+            } else {
+              fileName = `${this.options.collationFileName}-${index}`;
+            }
+
+            writeFileSync(
+              join(this.outputPath, this.options.contentFolder, fileName),
+              JSON.stringify(serializedPageData)
+            );
+
+            // also write the default collection name for the first page
+            if (index === 0) {
+              writeFileSync(
+                join(this.outputPath, this.options.contentFolder, this.options.collationFileName),
+                JSON.stringify(serializedPageData)
+              );
+            }
+          });
+        } else {
+          writeFileSync(
+            join(this.outputPath, this.options.contentFolder, this.options.collationFileName),
+            JSON.stringify(this.contentSerializer.serialize(collectionFileData))
+          );
+        }
       }
 
       // TODO: deprecated - delete on next major release
       if (this.options.collections) {
+        if (this.options.paginate) {
+          throw new Error('Pagination is not supported with multiple collections. Please use `collate` if you want pagination.');
+        }
+
         this.options.collections.forEach((collection) => {
           if (collection.src) {
             // eslint-disable-next-line no-console
