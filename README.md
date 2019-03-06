@@ -30,6 +30,7 @@ By default the plugin also looks for a `pages.yml` that exposes it as a JSON:API
 Table of Contents in the consuming application.
 
 ## How to integrate into an Ember app
+
 The simplest way to integrate this into your Ember Application is to create the `StaticSiteJson` tree
 and merge it into your Ember app tree as follows:
 
@@ -55,6 +56,7 @@ To see a more in-depth implementation using an in-repo addon check out the [Embe
 App](https://github.com/ember-learn/guides-app).
 
 ## Using with Ember Fastboot and Prember
+
 [Prember](https://github.com/ef4/prember) allows you to pre-render any list of URLs into static HTML files at build time using [Ember Fastboot](https://www.ember-fastboot.com/). Prember is recommended if you are trying to deploy an Ember-based static site using `broccoli-static-site-json`.
 
 If you would like to use `broccoli-static-site-json` with Prember you must make sure that your static json tree is available to the Ember app at build time. The only way to do this is to build the `broccoli-static-site-json` tree in an **Ember Addon** and make sure it is exposed via the `treeForPublic()` hook of that addon. The quickest and easiest way to start working with an Ember addon would be to create an in-repo addon. To create an in-repo addon first run
@@ -90,6 +92,7 @@ module.exports = {
 ## Detailed documentation
 
 ### Attributes
+
 By default this plugin assumes the only attribute available on the front-matter is `title`. You
 can configure what attributes you want exposed in the JSON:API output by simply adding the
 `attributes` config value as follows:
@@ -100,7 +103,8 @@ const jsonTree = new StaticSiteJson('content', {
 });
 ```
 
-### Type
+### Type
+
 By default this plugin will use the name of the folder that you're building as the _JSON:API type_ for example if you had the following configuration:
 
 ```javascript
@@ -120,6 +124,7 @@ const jsonTree = new StaticSiteJson('really-strange_placeToPut_some_FILES', {
 **Note:** just like the folder example the type will be automatically pluralised.
 
 ### Collections
+
 Collections are a convenient way of placing multiple markdown files (found under the same folder) in
 a single JSON:API document. This can be used when wanting to retrieve multiple documents at any one
 time (`findAll`).
@@ -136,6 +141,7 @@ new StaticSiteJson(`content`, {
   * `output`: The output file name of the collection JSON:API document.
 
 ### Relationships
+
 One of the things that differentiates this Broccoli Plugin from some of the other approaches of
 accessing Markdown, from an Ember application, is that because we are generating JSON:API compatible
 JSON files we are able to make use of real relationships.
