@@ -1,4 +1,10 @@
 
+3.2.1 / 2019-04-03
+==================
+
+  * fixing newline prefix on content attribute from @mansona
+  * fixing readme rendering #22 from @efx
+
 3.2.0 / 2019-02-19
 ==================
 
