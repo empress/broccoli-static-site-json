@@ -45,6 +45,7 @@ title: a lovely title
 # Hello world`);
 
     expect(result.attributes).have.property('title', 'a lovely title');
+    expect(result.attributes).have.property('content', '# Hello world');
   });
 
   it('should not inlude any extra frontmatter that is not defined in attributes', async () => {

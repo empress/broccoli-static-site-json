@@ -144,7 +144,7 @@ title: more words
       id: 'double-word',
       attributes: {
         html: '<h1 id="whenonewordisnotenough">When one word is not enough</h1>',
-        content: '\n# When one word is not enough',
+        content: '# When one word is not enough',
         title: 'more words',
       },
     });
@@ -153,7 +153,7 @@ title: more words
       id: 'index',
       attributes: {
         html: '<h1 id="helloworld">Hello world</h1>',
-        content: '\n# Hello world',
+        content: '# Hello world',
         title: 'a lovely title',
       },
     });
@@ -162,7 +162,7 @@ title: more words
       id: 'project',
       attributes: {
         html: '<h1 id="goodbyeworld">Goodbye world</h1>',
-        content: '\n# Goodbye world',
+        content: '# Goodbye world',
         title: 'a less lovely title',
       },
     });

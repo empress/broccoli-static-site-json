@@ -147,7 +147,7 @@ id: face
     expect(JSON.parse(folderOutput.content['face.json']).data).to.deep.include({
       id: 'face',
       attributes: {
-        content: '\n# Hello face world', // TODO: should it have this `\n` here?
+        content: '# Hello face world',
         html: '<h1 id="hellofaceworld">Hello face world</h1>',
       },
     });
