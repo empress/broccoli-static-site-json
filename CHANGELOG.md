@@ -1,4 +1,10 @@
 
+3.3.0 / 2019-04-11
+==================
+
+  * Implementing Pagination #21 from @mansona
+  * deprecating `collections` in favour of `collate` #21 from @mansona
+
 3.2.1 / 2019-04-03
 ==================
 
