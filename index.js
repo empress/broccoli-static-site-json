@@ -147,8 +147,22 @@ class BroccoliStaticSiteJson extends Plugin {
 
             if (fileNameMatch) {
               fileName = `${fileNameMatch[1]}-${index}.json`;
+
+              serializedPageData.links = {
+                first: `/${this.options.contentFolder}/${fileNameMatch[1]}-0.json`,
+                last: `/${this.options.contentFolder}/${fileNameMatch[1]}-${contentPages.length - 1}.json`,
+                prev: index === 0 ? null : `/${this.options.contentFolder}/${fileNameMatch[1]}-${index - 1}.json`,
+                next: index === contentPages.length - 1 ? null : `/${this.options.contentFolder}/${fileNameMatch[1]}-${index + 1}.json`,
+              };
             } else {
               fileName = `${this.options.collationFileName}-${index}`;
+
+              serializedPageData.links = {
+                first: `/${this.options.contentFolder}/${fileNameMatch[1]}-0`,
+                last: `/${this.options.contentFolder}/${fileNameMatch[1]}-${contentPages.length - 1}`,
+                prev: index === 0 ? null : `/${this.options.contentFolder}/${fileNameMatch[1]}-${index - 1}`,
+                next: index === contentPages.length - 1 ? null : `/${this.options.contentFolder}/${fileNameMatch[1]}-${index + 1}`,
+              };
             }
 
             writeFileSync(
