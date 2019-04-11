@@ -66,7 +66,7 @@ title: more words
 ---
 # When one word is not enough`,
     }, {
-      collate: true
+      collate: true,
     });
 
     expect(files['index.json']).to.have.property('id', 'index');
