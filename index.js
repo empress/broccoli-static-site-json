@@ -137,7 +137,15 @@ class BroccoliStaticSiteJson extends Plugin {
         const collectionFileData = readMarkdownFolder(folder, this.options);
 
         if (this.options.paginate) {
-          const contentPages = _.chunk(collectionFileData, this.options.pageSize);
+          const contentPages = _.chain(collectionFileData)
+            .tap((items) => {
+              if (this.options.paginateSortFunction) {
+                return items.sort(this.options.paginateSortFunction);
+              }
+              return items;
+            })
+            .chunk(this.options.pageSize)
+            .value();
 
           contentPages.forEach((pageData, index) => {
             const serializedPageData = this.contentSerializer.serialize(pageData);
