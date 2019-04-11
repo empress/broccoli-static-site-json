@@ -123,22 +123,118 @@ const jsonTree = new StaticSiteJson('really-strange_placeToPut_some_FILES', {
 
 **Note:** just like the folder example the type will be automatically pluralised.
 
-### Collections
-
-Collections are a convenient way of placing multiple markdown files (found under the same folder) in
-a single JSON:API document. This can be used when wanting to retrieve multiple documents at any one
-time (`findAll`).
+### Collate
+If you want to have the ability to query all of your content at once you can do
+that by **collating** content together in a collection. This will place all of
+your markdown files into a single JSON:API document and can be used for
+`findAll` queries. To turn on collation you just need to set the `collate`
+attribute to `true`
 
 ```javascript
 new StaticSiteJson(`content`, {
-  collections: [{
-    output: `allContent.json`,
-  }]
+  collate: true,
 })
 ```
 
-* `options`
-  * `output`: The output file name of the collection JSON:API document.
+* `collate`: Boolean - Default: false
+
+### CollationFileName
+
+If you have turned on collation by default BroccoliStaticSiteJson will  output
+the collated documents with the file name `all.json`. If you want to be able to
+edit this default output file you can set the `collationFileName`.
+
+```javascript
+new StaticSiteJson(`content`, {
+  collate: true,
+  collationFileName: 'articles.json'
+})
+```
+
+* `collationFileName`: String - Default: `all.json`
+
+### paginate
+
+In most cases when you're using BroccoliStaticSiteJson you probably will not be
+dealing with collections that are too large. But in some cases, for example a
+blog, you want to be able to deal with collections of an arbitrary length and it
+would be useful to paginate your collated collections. To enable pagination you
+set `paginate` to be true in your options:
+
+```javascript
+new StaticSiteJson(`content`, {
+  collate: true,
+  paginate: true,
+})
+```
+
+**Note:** `paginate` will do nothing if you haven't set `collate` to true.
+
+This will produce a series of files in your output tree:
+
+```
+content/all.json
+content/all-0.json
+content/all-1.json
+content/all-2.json
+content/all-3.json
+...
+```
+
+Each of these files makes use of the [JSON:API spec's pagination
+meta](https://jsonapi.org/format/#fetching-pagination) and will have links
+entries for `first`, `last`, `next`, and `prev` as appropriate.
+
+**Note:** the contents of `content/all.json` and `content/all-0.json` are
+**exactly** the same. This is provided for simplicity and backwards
+compatibility when querying paginated collections.
+
+### pageSize
+
+By default, if you have turned on pagination, BroccoliStaticSiteJson will use a
+page size of 10 entries per file. If you want to change the page size then you
+can set the `pageSize` in the options:
+
+```javascript
+new StaticSiteJson(`content`, {
+  collate: true,
+  paginate: true,
+  pageSize: 20,
+})
+```
+
+Note: `pageSize` will do nothing if `paginate` is missing or set to false.
+
+### paginateSortFunction
+
+When paginating the order of the items in each page becomes very important, and
+will be highly dependent on your specific use case. For example, if you are
+using BroccoliStaticSiteJson for a blogging platform you will most likely want
+to order the posts by date and from latest to oldest.
+
+For this reason you can define a `paginateSortFunction()` that will be passed as
+a compareFunction into
+[Array.sort()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort).
+The full list of items will be sorted before they are chunked into pages. Here
+is a simplified example taken from what is used in
+[empress-blog](https://github.com/empress/empress-blog) to sort posts by date:
+
+```javascript
+const contentTree = new StaticSiteJson('content', {
+  attributes: ['date'], // this is simplified for the example
+  collate: true,
+  paginate: true,
+  paginateSortFunction(a, b) {
+    return b.date - a.date;
+  }
+});
+```
+
+**Note:** you can only sort based on attributes that have been defined in your
+`attributes` parameter. `id` is always available and is the name of the file
+by default.
+
+Note: `paginateSortFunction()` does nothing if `paginate` is not true;
 
 ### Relationships
 
