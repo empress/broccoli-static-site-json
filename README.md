@@ -31,50 +31,34 @@ Table of Contents in the consuming application.
 
 ## How to integrate into an Ember app
 
-The simplest way to integrate this into your Ember Application is to create the `StaticSiteJson` tree
-and merge it into your Ember app tree as follows:
-
-```javascript
-'use strict';
-
-const EmberApp = require('ember-cli/lib/broccoli/ember-app');
-const BroccoliMergeTrees = require('broccoli-merge-trees');
-const StaticSiteJson = require('broccoli-static-site-json');
-
-module.exports = function(defaults) {
-  let app = new EmberApp(defaults, {
-    // Add options here
-  });
-
-  let contentsJson = new StaticSiteJson('content');
-
-  return new BroccoliMergeTrees([app.toTree(), contentsJson]);
-};
-```
-
-To see a more in-depth implementation using an in-repo addon check out the [Ember Guides
-App](https://github.com/ember-learn/guides-app).
-
-## Using with Ember Fastboot and Prember
+We use an in-repo addon to give ourselves the flexibility to add prember & fastboot later.
 
 [Prember](https://github.com/ef4/prember) allows you to pre-render any list of URLs into static HTML files at build time using [Ember Fastboot](https://www.ember-fastboot.com/). Prember is recommended if you are trying to deploy an Ember-based static site using `broccoli-static-site-json`.
 
-If you would like to use `broccoli-static-site-json` with Prember you must make sure that your static json tree is available to the Ember app at build time. The only way to do this is to build the `broccoli-static-site-json` tree in an **Ember Addon** and make sure it is exposed via the `treeForPublic()` hook of that addon. The quickest and easiest way to start working with an Ember addon would be to create an in-repo addon. To create an in-repo addon first run
+### Step 1
+
+Generate the in-repo addon:
 
 ```bash
-ember generate in-repo-addon your-addon-name
+ember generate in-repo-addon content-generator
 ```
 
-It will create a new directory `lib/your-addon-name` with two files: `index.json` and `package.json`.
+It will create a new directory `lib/content-generator` with two files: `index.json` and `package.json`.
 
-You should update the `index.json` file and add your `broccoli-static-site-json` implementation, then you should expose the resulting tree using the `treeForPublic` hook. You can see an example of how to do this below:
+### Step 2
+
+Update the `index.json` file and add your `broccoli-static-site-json` implementation, then expose the resulting tree using the `treeForPublic` hook.
+
+#### Example
 
 ```javascript
 'use strict';
 
 const StaticSiteJson = require('broccoli-static-site-json');
 
-const contentsJson = new StaticSiteJson('content');
+const contentsJson = new StaticSiteJson('content', {
+  outputFolder: 'contents',
+});
 
 module.exports = {
   name: require('./package').name,
@@ -87,6 +71,71 @@ module.exports = {
     return contentsJson;
   }
 };
+```
+
+**Note:** we need to add the `outputFolder: 'contents'` config because ember-data expects the folder name to be pluralised and broccoli-static-site-json does not do this by default.
+
+### Step 3
+
+Then in your Ember application, generate an application adapter:
+
+```bash
+ember generate adapter application
+```
+
+and update the contents as such(unless you are using Fastboot, in which case skip to the next example):
+
+```javascript
+import DS from 'ember-data';
+import { computed } from '@ember/object';
+
+export default DS.JSONAPIAdapter.extend({
+
+  urlForFindAll(modelName) {
+    const path = this.pathForType(modelName);
+    return `${path}/all.json`;
+  },
+
+  urlForFindRecord(id, modelName) {
+    const path = this.pathForType(modelName);
+    return `${path}/${id}.json`;
+  }
+});
+```
+
+If you **are** using Fastboot and prember, do this instead:
+
+```javascript
+import DS from 'ember-data';
+import AdapterFetch from 'ember-fetch/mixins/adapter-fetch';
+
+import { inject as service } from '@ember/service';
+import { computed } from '@ember/object';
+
+export default DS.JSONAPIAdapter.extend({
+  fastboot: service(),
+
+  host: computed('fastboot.isFastBoot', function() {
+    if (this.get('fastboot.isFastBoot')) {
+      let protocol = this.get('fastboot.request.protocol');
+
+      return `${protocol}//${this.get('fastboot.request.host')}`;
+    } else {
+      return window.location.origin;
+    }
+  }),
+
+  urlForFindAll(modelName) {
+    const path = this.pathForType(modelName);
+    return `${this.host}/${path}/all.json`;
+  },
+
+  urlForFindRecord(id, modelName) {
+    const path = this.pathForType(modelName);
+    return `${this.host}/${path}/${id}.json`;
+  }
+});
+
 ```
 
 ## Detailed documentation
