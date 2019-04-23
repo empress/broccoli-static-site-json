@@ -217,6 +217,39 @@ title: more words
     });
   });
 
+  it('should still generate the all.json even if there is only one input file', async () => {
+    const subject = new StaticSiteJson(input.path(), {
+      type: 'page',
+      collate: true,
+    });
+
+    output = createBuilder(subject);
+
+    input.write({
+      'index.md': `---
+title: a lovely title
+---
+# Hello world`,
+    });
+
+    await output.build();
+
+    const folderOutput = output.read();
+
+    expect(folderOutput.content).to.have.property('index.json');
+    expect(folderOutput.content).to.have.property('all.json');
+
+    expect(JSON.parse(folderOutput.content['all.json']).data).to.deep.include({
+      type: 'pages',
+      id: 'index',
+      attributes: {
+        html: '<h1 id="helloworld">Hello world</h1>',
+        content: '# Hello world',
+        title: 'a lovely title',
+      },
+    });
+  });
+
   it('should work if a broccoli plugin is passed in instead of a folder', async () => {
     const mdFiles = new Funnel(input.path(), { destDir: 'face' });
 
