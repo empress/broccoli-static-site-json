@@ -73,7 +73,7 @@ module.exports = {
 };
 ```
 
-**Note:** we need to add the `outputFolder: 'contents'` config because ember-data expects the folder name to be pluralised and broccoli-static-site-json does not do this by default.
+**Note:** we need to add the `contentFolder: 'contents'` config because ember-data expects the folder name to be pluralised and broccoli-static-site-json does not do this by default.
 
 ### Step 3
 
