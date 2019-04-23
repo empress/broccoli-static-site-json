@@ -57,7 +57,7 @@ Update the `index.json` file and add your `broccoli-static-site-json` implementa
 const StaticSiteJson = require('broccoli-static-site-json');
 
 const contentsJson = new StaticSiteJson('content', {
-  outputFolder: 'contents',
+  contentFolder: 'contents',
 });
 
 module.exports = {
@@ -87,7 +87,6 @@ and update the contents as such(unless you are using Fastboot, in which case ski
 
 ```javascript
 import DS from 'ember-data';
-import { computed } from '@ember/object';
 
 export default DS.JSONAPIAdapter.extend({
 
