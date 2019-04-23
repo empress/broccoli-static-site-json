@@ -236,8 +236,6 @@ title: a lovely title
 
     const folderOutput = output.read();
 
-    console.log(folderOutput)
-
     expect(folderOutput.content).to.have.property('index.json');
     expect(folderOutput.content).to.have.property('all.json');
 
