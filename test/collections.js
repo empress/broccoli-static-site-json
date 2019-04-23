@@ -229,7 +229,7 @@ title: more words
       'index.md': `---
 title: a lovely title
 ---
-# Hello world`
+# Hello world`,
     });
 
     await output.build();
