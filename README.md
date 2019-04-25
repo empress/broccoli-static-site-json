@@ -47,7 +47,7 @@ It will create a new directory `lib/content-generator` with two files: `index.js
 
 ### Step 2
 
-Update the `index.json` file and add your `broccoli-static-site-json` implementation, then expose the resulting tree using the `treeForPublic` hook.
+Update the `index.js` file and add your `broccoli-static-site-json` implementation, then expose the resulting tree using the `treeForPublic` hook.
 
 #### Example
 
@@ -58,6 +58,7 @@ const StaticSiteJson = require('broccoli-static-site-json');
 
 const contentsJson = new StaticSiteJson('content', {
   contentFolder: 'contents',
+  collate: true,
 });
 
 module.exports = {
