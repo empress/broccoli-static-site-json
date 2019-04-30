@@ -1,9 +1,5 @@
 language: node_js
 
-node_js:
-  - 8
-  - 10
-
 branches:
   only:
     - master
@@ -11,7 +7,25 @@ branches:
 matrix:
   include:
     - node_js: 6
+      os: linux
       script: ./node_modules/.bin/mocha test/basic.js
+    - node_js: 8
+      os: linux
+    - node_js: 10
+      os: linux
+      before_script:
+        - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+        - chmod +x ./cc-test-reporter
+        - ./cc-test-reporter before-build
+        - mkdir coverage
+      after_script:
+        - npm run coverage
+        - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+    - node_js: 8
+      os: windows
+    - node_js: 10
+      os: windows
+
 
 env:
   global:
@@ -22,16 +36,6 @@ before_install:
   # if npm version is less than 5, upgrade to 6
   - if [[ $(npm -v | cut -d '.' -f 1) -lt 5 ]]; then npm i -g npm@6; fi
 
-before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
-  - mkdir coverage
-
 script:
   - npm run lint:js
   - npm test
-
-after_script:
-  - npm run coverage
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
