@@ -23,8 +23,10 @@ matrix:
         - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
     - node_js: 8
       os: windows
+      script: npm test
     - node_js: 10
       os: windows
+      script: npm test
 
 
 env:
