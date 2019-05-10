@@ -324,7 +324,7 @@ const jsonTree = new StaticSiteJson('content', {
   - Contains the first 260 characters of the content of the file
 
 
-#### Markdown rendering configuration
+### Markdown rendering configuration
 
 This plugin uses showdown to render markdown. right now we only support,
 global configuration of showdown, please see https://github.com/showdownjs/showdown#options
