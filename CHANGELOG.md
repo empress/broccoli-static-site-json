@@ -1,4 +1,12 @@
 
+3.3.1 / 2019-05-10
+==================
+
+  * Allowing showdown to use global configuration correctly #27 from @billybonks
+  * Adding testing in Windows #26 from @mansona
+  * Add full docs on how to use this effectively with Ember #25 from @MelSumner
+  * Adding an extra test for collate functionality #24 from @MelSumner
+
 3.3.0 / 2019-04-11
 ==================
 
