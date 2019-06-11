@@ -84,58 +84,44 @@ Then in your Ember application, generate an application adapter:
 ember generate adapter application
 ```
 
-and update the contents as such(unless you are using Fastboot, in which case skip to the next example):
+and update the contents to match the following example:
 
 ```javascript
 import DS from 'ember-data';
 
 export default DS.JSONAPIAdapter.extend({
-
   urlForFindAll(modelName) {
     const path = this.pathForType(modelName);
-    return `${path}/all.json`;
+    return `/${path}/all.json`;
   },
 
   urlForFindRecord(id, modelName) {
     const path = this.pathForType(modelName);
-    return `${path}/${id}.json`;
+    return `/${path}/${id}.json`;
   }
 });
 ```
 
-If you **are** using Fastboot and prember, do this instead:
+### Step 4
+
+Now we need to generate a Model so that we can request the data in a route: 
+
+```bash
+ember generate model content
+```
+
+This `content` name matches the example we used above when using the `StaticSiteJson()` broccoli plugin.
+
+No you are able to query your data in an Ember Route: 
 
 ```javascript
-import DS from 'ember-data';
-import AdapterFetch from 'ember-fetch/mixins/adapter-fetch';
+import Route from '@ember/routing/route';
 
-import { inject as service } from '@ember/service';
-import { computed } from '@ember/object';
-
-export default DS.JSONAPIAdapter.extend({
-  fastboot: service(),
-
-  host: computed('fastboot.isFastBoot', function() {
-    if (this.get('fastboot.isFastBoot')) {
-      let protocol = this.get('fastboot.request.protocol');
-
-      return `${protocol}//${this.get('fastboot.request.host')}`;
-    } else {
-      return window.location.origin;
-    }
-  }),
-
-  urlForFindAll(modelName) {
-    const path = this.pathForType(modelName);
-    return `${this.host}/${path}/all.json`;
-  },
-
-  urlForFindRecord(id, modelName) {
-    const path = this.pathForType(modelName);
-    return `${this.host}/${path}/${id}.json`;
+export default Route.extend({
+  model() {
+    return this.store.findAll('content');
   }
 });
-
 ```
 
 ## Detailed documentation
