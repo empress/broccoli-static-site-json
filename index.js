@@ -38,9 +38,10 @@ function subpageUrls(parentUrl, currentPage, childPages) {
 const supportedContentTypes = ['content', 'html', 'description'];
 
 class BroccoliStaticSiteJson extends Plugin {
-  constructor(folder, options) {
-    // tell broccoli which "nodes" we're watching
-    super([folder], options);
+  constructor(folder, options = {}) {
+    super([folder], {
+      annotation: options.annotation,
+    });
 
     this.options = _.assign({}, {
       contentFolder: 'content',
@@ -85,10 +86,6 @@ class BroccoliStaticSiteJson extends Plugin {
     }
 
     this.contentSerializer = new Serializer(this.options.type || folder, serializerOptions);
-
-    Plugin.call(this, [folder], {
-      annotation: this.options.annotation,
-    });
   }
 
   build() {
