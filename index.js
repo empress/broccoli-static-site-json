@@ -2,38 +2,14 @@ const _ = require('lodash');
 const { Serializer } = require('jsonapi-serializer');
 const mkdirp = require('mkdirp');
 const Plugin = require('broccoli-plugin');
-const yaml = require('js-yaml');
 const { dirname, join } = require('path');
 const {
   existsSync,
-  readFileSync,
   writeFileSync,
 } = require('fs');
 
 const readMarkdownFolder = require('./lib/readMarkdownFolder');
-
-const TableOfContentsSerializer = new Serializer('page', {
-  id: 'url',
-  attributes: [
-    'title',
-    'pages',
-    'skip_toc',
-  ],
-  keyForAttribute: 'cammelcase',
-});
-
-function subpageUrls(parentUrl, currentPage, childPages) {
-  if (currentPage && parentUrl) {
-    // eslint-disable-next-line no-param-reassign
-    currentPage.url = `${parentUrl}/${currentPage.url}`;
-  }
-
-  if (childPages) {
-    childPages.forEach((page) => {
-      subpageUrls(currentPage ? currentPage.url : null, page, page.pages);
-    });
-  }
-}
+const TableOfContents = require('./lib/tableOfContents');
 
 const supportedContentTypes = ['content', 'html', 'description'];
 
@@ -98,23 +74,10 @@ class BroccoliStaticSiteJson extends Plugin {
     }
 
     // build pages file
-    let pages;
-
     this.inputPaths.forEach((folder) => {
-      if (existsSync(join(folder, 'pages.yml'))) {
-        pages = yaml.safeLoad(readFileSync(join(folder, 'pages.yml'), 'utf8'));
-      } else if (existsSync(join(folder, 'pages.json'))) {
-        // eslint-disable-next-line
-        pages = require(join(folder, 'pages.json'));
-      }
-
-      if (pages) {
-        // add the parent id to each subpage
-        subpageUrls(null, null, pages);
-
-        writeFileSync(join(this.outputPath, this.options.contentFolder, 'pages.json'), JSON.stringify(TableOfContentsSerializer.serialize(pages)));
-      }
-
+      const pagesOutputFile = join(this.outputPath, this.options.contentFolder, 'pages.json');
+      const tableOfContents = new TableOfContents(folder, pagesOutputFile);
+      tableOfContents.build();
       // build the tree of MD files
       const fileData = readMarkdownFolder(folder, this.options);
 
