@@ -13,7 +13,11 @@
     "test-watch": "node scripts/test-watch.js"
   },
   "dependencies": {
+    "broccoli-merge-trees": "^3.0.2",
+    "broccoli-persistent-filter": "^2.3.0",
     "broccoli-plugin": "^2.1.0",
+    "broccoli-stew": "^2.1.0",
+    "broccoli-funnel": "^2.0.2",
     "debug": "^4.1.1",
     "html2plaintext": "^2.1.2",
     "js-yaml": "^3.13.1",
@@ -27,7 +31,6 @@
   },
   "devDependencies": {
     "broccoli": "^3.1.1",
-    "broccoli-funnel": "^2.0.2",
     "broccoli-test-helper": "^2.0.0",
     "chai": "^4.2.0",
     "eslint": "^5.11.1",
