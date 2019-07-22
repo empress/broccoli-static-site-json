@@ -10,13 +10,7 @@
     "no-underscore-dangle": [2, {
       "allow": ["__content"]
     }],
-    "comma-dangle": ["error", {
-      "arrays": "always-multiline",
-      "objects": "always-multiline",
-      "imports": "always",
-      "exports": "always",
-      "functions": "never"
-    }]
+    "linebreak-style": 0
   },
   "overrides": [{
     "files": ["test/**/*.js"],
