@@ -2,8 +2,7 @@ const BroccoliMergeTrees = require('broccoli-merge-trees');
 const BroccoliFunnel = require('broccoli-funnel');
 const { mv } = require('broccoli-stew');
 const TableOfContents = require('./lib/table-of-contents');
-const MarkdownToJsonApi = require('./lib/markdown-to-json');
-const CollateJsonApiBlobs = require('./lib/serialize-json-blobs');
+const MarkdownToJsonApi = require('./lib/markdown-to-jsonapi');
 
 
 module.exports = function StaticSiteJson(folder, options = {}) {
@@ -11,8 +10,7 @@ module.exports = function StaticSiteJson(folder, options = {}) {
     include: ['**/*.md', '**/*.markdown'],
   });
   const pagesTree = new TableOfContents([folder], options);
-  const jsonTree = new MarkdownToJsonApi(cleanMarkdownFunnel, options);
-  const jsonApiTree = new CollateJsonApiBlobs(jsonTree, options);
+  const jsonApiTree = new MarkdownToJsonApi(cleanMarkdownFunnel, options);
   const compiledTrees = new BroccoliMergeTrees([jsonApiTree, pagesTree]);
   return mv(compiledTrees, (options.contentFolder || 'content'));
 };
