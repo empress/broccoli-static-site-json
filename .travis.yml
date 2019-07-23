@@ -33,6 +33,10 @@ jobs:
       os: linux
     - node_js: 10
       os: windows
+    - node_js: 10
+      os: osx
+      before_install:
+        - brew install watchman
     - node_js: 12
       os: linux
     - node_js: 12
