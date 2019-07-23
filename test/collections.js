@@ -111,6 +111,7 @@ id: 3
 
   it('should allow you to define a collection and for the specified content folder to be exported as an single JSONAPI array response', async () => {
     const subject = new StaticSiteJson(input.path(), {
+      attributes: ['title'],
       type: 'page',
       collate: true,
     });
@@ -167,6 +168,7 @@ title: more words
 
   it('should still generate the all.json even if there is only one input file', async () => {
     const subject = new StaticSiteJson(input.path(), {
+      attributes: ['title'],
       type: 'page',
       collate: true,
     });
