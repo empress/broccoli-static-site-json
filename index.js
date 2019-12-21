@@ -18,6 +18,7 @@ const TableOfContentsSerializer = new Serializer('page', {
     'title',
     'pages',
     'skip_toc',
+    'is_heading',
   ],
   keyForAttribute: 'cammelcase',
 });
