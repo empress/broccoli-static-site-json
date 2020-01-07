@@ -8,8 +8,7 @@ describe('table-of-contents', function () {
   it('should build', async function () {
     const input = await createTempDir();
     try {
-      // TODO why does this need to be an array of folders
-      const subject = new TableOfContents([input.path()]);
+      const subject = new TableOfContents(input.path());
       const output = createBuilder(subject);
 
       try {
