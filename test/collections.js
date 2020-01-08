@@ -35,8 +35,6 @@ describe('collections', () => {
   });
 
   afterEach(async () => {
-    // eslint-disable-next-line no-console
-    console.warn.restore();
     try {
       await input.dispose();
     } finally {
