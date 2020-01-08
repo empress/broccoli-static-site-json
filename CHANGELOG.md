@@ -1,4 +1,8 @@
 
+4.0.0-1 / 2020-01-08
+==================
+  * turn off collation functionality if it is not configured from @mansona
+
 4.0.0-0 / 2020-01-08
 ==================
 
