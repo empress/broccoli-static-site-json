@@ -1,18 +1,21 @@
 language: node_js
+node_js:
+  - "10"
 
 branches:
   only:
     - master
+    - refactor/smaller-broccoli-plugins
 
-matrix:
+jobs:
+  fail_fast: true
+
   include:
-    - node_js: 6
-      os: linux
-      script: ./node_modules/.bin/mocha test/basic.js
-    - node_js: 8
-      os: linux
-    - node_js: 10
-      os: linux
+    - stage: "Tests"
+      name: "Tests"
+      script:
+        - npm run lint:js
+        - npm test
       before_script:
         - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
         - chmod +x ./cc-test-reporter
@@ -21,22 +24,19 @@ matrix:
       after_script:
         - npm run coverage
         - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
-    - node_js: 8
-      os: windows
-      script: npm test
+    - stage: "All OS and Node versions"
+      node_js: 10
+      os: linux
     - node_js: 10
       os: windows
-      script: npm test
-
+    - node_js: 12
+      os: linux
+    - node_js: 12
+      os: windows
 
 env:
   global:
     - CC_TEST_REPORTER_ID=e86c6de11dd97ad1777b3212cddc0367b150816025083150839f687b7fbce7f9
-
-before_install:
-  - npm config --global set spin false
-  # if npm version is less than 5, upgrade to 6
-  - if [[ $(npm -v | cut -d '.' -f 1) -lt 5 ]]; then npm i -g npm@6; fi
 
 script:
   - npm run lint:js

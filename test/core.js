@@ -115,47 +115,6 @@ describe('core functionality', function () {
     await input.dispose();
   });
 
-  it('should allow you to override the id a the JSON:API document with front-matter', async () => {
-    const input = await createTempDir();
-
-    const subject = new StaticSiteJson(input.path());
-    const output = createBuilder(subject);
-
-    input.write({
-      'index.md': '# Hello world',
-      'other-id.md': `---
-id: face
----
-# Hello face world`,
-    });
-
-    await output.build();
-
-    const folderOutput = output.read();
-
-    expect(folderOutput.content).to.have.property('index.json');
-    expect(folderOutput.content).to.have.property('face.json');
-
-    expect(JSON.parse(folderOutput.content['index.json']).data).to.deep.include({
-      id: 'index',
-      attributes: {
-        content: '# Hello world',
-        html: '<h1 id="helloworld">Hello world</h1>',
-      },
-    });
-
-    expect(JSON.parse(folderOutput.content['face.json']).data).to.deep.include({
-      id: 'face',
-      attributes: {
-        content: '# Hello face world',
-        html: '<h1 id="hellofaceworld">Hello face world</h1>',
-      },
-    });
-
-    await output.dispose();
-    await input.dispose();
-  });
-
   it('should allow you to override the JSON:API type', async () => {
     const input = await createTempDir();
 
@@ -198,7 +157,7 @@ id: face
     input.write({
       'index.md': '# Hello world',
       'pages.yml': `
-- title: "Introduction
+- title: "Introduction"
   url: 'toc-heading-introduction'
   is_heading: true
 

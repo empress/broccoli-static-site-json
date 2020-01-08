@@ -38,11 +38,23 @@ describe('JSONAPI attributes', () => {
     }
   });
 
-  it('should include title if the frontmatter is included but no options passed', async () => {
+  it('should not include title if the frontmatter is included but no options passed', async () => {
     const result = await buildSingleFile(`---
 title: a lovely title
 ---
 # Hello world`);
+
+    expect(result.attributes).not.have.property('title', 'a lovely title');
+    expect(result.attributes).have.property('content', '# Hello world');
+  });
+
+  it('should include title if the frontmatter is included and title is in attributes', async () => {
+    const result = await buildSingleFile(`---
+title: a lovely title
+---
+# Hello world`, {
+      attributes: ['title'],
+    });
 
     expect(result.attributes).have.property('title', 'a lovely title');
     expect(result.attributes).have.property('content', '# Hello world');
