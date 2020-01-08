@@ -157,6 +157,10 @@ describe('core functionality', function () {
     input.write({
       'index.md': '# Hello world',
       'pages.yml': `
+- title: "Introduction"
+  url: 'toc-heading-introduction'
+  is_heading: true
+
 - title: "Guides and Tutorials"
   url: 'index'
   skip_toc: true
@@ -184,6 +188,15 @@ describe('core functionality', function () {
     const folderOutput = output.read();
 
     expect(folderOutput.content).to.have.property('index.json');
+
+    expect(JSON.parse(folderOutput.content['pages.json']).data).to.deep.include({
+      type: 'pages',
+      id: 'toc-heading-introduction',
+      attributes: {
+        title: 'Introduction',
+        'is-heading': true,
+      },
+    });
 
     expect(JSON.parse(folderOutput.content['pages.json']).data).to.deep.include({
       type: 'pages',

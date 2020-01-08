@@ -1,9 +1,14 @@
 
+3.4.0 / 2019-12-21
+==================
+
+  * Add `is_heading` parameter to ToC items from @pzuraq
+
 3.3.2 / 2019-06-13
 ==================
 
   * bumping dependencies
-  * Merge pull request #28 from empress/mansona-patch-1
+  * Merge pull request #28 from @mansona
   * Simplify the Ember App instructions
 
 3.3.1 / 2019-05-10
