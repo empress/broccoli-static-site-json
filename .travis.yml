@@ -25,11 +25,7 @@ jobs:
         - npm run coverage
         - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
     - stage: "All OS and Node versions"
-      node_js: 8
-      os: linux
-    - node_js: 8
-      os: windows
-    - node_js: 10
+      node_js: 10
       os: linux
     - node_js: 10
       os: windows
