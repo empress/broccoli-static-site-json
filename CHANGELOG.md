@@ -1,4 +1,12 @@
 
+4.0.0 / 2020-01-08
+==================
+  * turn off collation functionality if it is not configured from @mansona
+  * Simplify refactor by removing some functionality #31 from @mansona
+  * Refactor codebase to be comprised of many smaller broccoli plugins #32 from @billybonks
+  * Remove support for node 6 and 8
+  * Remove deprecations from 3.x releases
+
 4.0.0-1 / 2020-01-08
 ==================
   * turn off collation functionality if it is not configured from @mansona
