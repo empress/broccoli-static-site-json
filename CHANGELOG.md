@@ -1,4 +1,9 @@
 
+4.1.0 / 2020-01-09
+==================
+
+  * Updating all dependencies #39 from @mansona
+
 4.0.0 / 2020-01-08
 ==================
   * turn off collation functionality if it is not configured from @mansona
