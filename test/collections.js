@@ -69,9 +69,9 @@ title: more words
     expect(files['double-word.json']).to.have.property('id', 'double-word');
 
     // each of the above files should exist in the all.json
-    expect(files['all.json'].find(obj => obj.id === 'index')).to.be.ok;
-    expect(files['all.json'].find(obj => obj.id === 'project')).to.be.ok;
-    expect(files['all.json'].find(obj => obj.id === 'double-word')).to.be.ok;
+    expect(files['all.json'].find((obj) => obj.id === 'index')).to.be.ok;
+    expect(files['all.json'].find((obj) => obj.id === 'project')).to.be.ok;
+    expect(files['all.json'].find((obj) => obj.id === 'double-word')).to.be.ok;
   });
 
   it('should allow you to define a collection and for the specified content folder to be exported as an single JSONAPI array response', async () => {
@@ -197,7 +197,7 @@ title: more words
     const allData = JSON.parse(folderOutput.content['all.json']).data;
 
     ['double-word', 'index', 'project'].forEach((id) => {
-      const allObject = allData.find(obj => obj.id.endsWith(id));
+      const allObject = allData.find((obj) => obj.id.endsWith(id));
 
       expect(allObject).to.be.ok;
 
