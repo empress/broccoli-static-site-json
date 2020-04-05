@@ -43,7 +43,7 @@ Generate the in-repo addon:
 ember generate in-repo-addon content-generator
 ```
 
-It will create a new directory `lib/content-generator` with two files: `index.json` and `package.json`.
+It will create a new directory `lib/content-generator` with two files: `index.js` and `package.json`.
 
 ### Step 2
 
