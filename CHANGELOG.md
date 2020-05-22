@@ -1,4 +1,10 @@
 
+4.2.0 / 2020-05-22
+==================
+
+  * Adds support for custom relationship types #42 from @jaredgalanis
+  * Fix typo in the README #41 from @Turbo87
+
 4.1.0 / 2020-01-09
 ==================
 
