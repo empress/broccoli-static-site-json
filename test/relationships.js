@@ -21,7 +21,7 @@ async function buildSingleFile(fileContents, options) {
   return indexJSON.data;
 }
 
-describe.only('references or relationships', () => {
+describe('references or relationships', () => {
   beforeEach(async () => {
     input = await createTempDir();
   });
