@@ -287,6 +287,16 @@ const jsonTree = new StaticSiteJson('content', {
 });
 ```
 
+You can also optionally define a custom type for a relationship by providing the `references` configuration an object with a `type` property and a `name` property. In this way, the `name` of the relationship can differ from its specified `type`.
+
+```javascript
+const jsonTree = new StaticSiteJson('content', {
+  references: ['author', { name: 'blog', type: 'post' }],
+});
+```
+
+Note, you can combine relationships defined as strings and relationships with custom types defined as objects.
+
 ### Content types
 
 By default this plugin ouputs the Markdown in two formats: the original contents of the Markdown
