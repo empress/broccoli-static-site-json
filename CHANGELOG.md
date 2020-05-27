@@ -1,4 +1,9 @@
 
+4.2.1 / 2020-05-27
+==================
+
+  * Update docs to include new custom type relationship #45 from @jaredgalanis
+
 4.2.0 / 2020-05-22
 ==================
 
