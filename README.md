@@ -35,7 +35,7 @@ We use an in-repo addon to give ourselves the flexibility to add prember & fastb
 
 [Prember](https://github.com/ef4/prember) allows you to pre-render any list of URLs into static HTML files at build time using [Ember Fastboot](https://www.ember-fastboot.com/). Prember is recommended if you are trying to deploy an Ember-based static site using `broccoli-static-site-json`.
 
-After installing the fastboot, prember and broccoli-static-site-json packages, here are the steps you take:
+After installing the `fastboot`, `prember` and `broccoli-static-site-json` packages (using the `npm install` command), here are the steps you take:
 
 ### Step 1
 
