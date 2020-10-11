@@ -35,6 +35,8 @@ We use an in-repo addon to give ourselves the flexibility to add prember & fastb
 
 [Prember](https://github.com/ef4/prember) allows you to pre-render any list of URLs into static HTML files at build time using [Ember Fastboot](https://www.ember-fastboot.com/). Prember is recommended if you are trying to deploy an Ember-based static site using `broccoli-static-site-json`.
 
+After installing the fastboot, prember and broccoli-static-site-json packages, here are the steps you take:
+
 ### Step 1
 
 Generate the in-repo addon:
@@ -112,7 +114,7 @@ ember generate model content
 
 This `content` name matches the example we used above when using the `StaticSiteJson()` broccoli plugin.
 
-No you are able to query your data in an Ember Route: 
+Now you are able to query your data in an Ember Route: 
 
 ```javascript
 import Route from '@ember/routing/route';
