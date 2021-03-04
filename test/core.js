@@ -5,6 +5,38 @@ const { expect } = require('chai');
 const StaticSiteJson = require('../index');
 
 describe('core functionality', function () {
+  it('should throw an error if no folder is passed in');
+
+  it('should build JSON files using the folder name', async function () {
+    const input = await createTempDir();
+
+    const subject = new StaticSiteJson(input.path());
+    const output = createBuilder(subject);
+
+    input.write({
+      'index.md': '# Hello world',
+    });
+
+    await output.build();
+
+    const folderOutput = output.read();
+
+    expect(folderOutput).to.have.property('content');
+    expect(folderOutput.content).to.have.property('index.json');
+    const indexJSON = JSON.parse(folderOutput.content['index.json']);
+
+    expect(indexJSON.data).to.deep.include({
+      id: 'index',
+      attributes: {
+        content: '# Hello world',
+        html: '<h1 id="helloworld">Hello world</h1>',
+      },
+    });
+
+    await output.dispose();
+    await input.dispose();
+  });
+
   it('should ignore non .md files', async () => {
     const input = await createTempDir();
 
