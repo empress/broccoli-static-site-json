@@ -1,12 +1,27 @@
 const BroccoliMergeTrees = require('broccoli-merge-trees');
 const BroccoliFunnel = require('broccoli-funnel');
 const { mv } = require('broccoli-stew');
+const { existsSync } = require('fs');
+const Plugin = require('broccoli-plugin');
+
 const TableOfContents = require('./lib/table-of-contents');
 const CollateJsonApiBlobs = require('./lib/collate-and-paginate');
 const MarkdownToJsonApi = require('./lib/markdown-to-jsonapi');
 
 
+class EmptyNode extends Plugin {
+  constructor() {
+    super([]);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  build() {}
+}
+
 module.exports = function StaticSiteJson(folder, options = {}) {
+  if (typeof folder === 'string' && !existsSync(folder)) {
+    return new EmptyNode();
+  }
   const cleanMarkdownFunnel = new BroccoliFunnel(folder, {
     include: ['**/*.md', '**/*.markdown'],
   });
