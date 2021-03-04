@@ -5,7 +5,12 @@ const { expect } = require('chai');
 const StaticSiteJson = require('../index');
 
 describe('core functionality', function () {
-  it('should throw an error if no folder is passed in');
+  it('should not throw an error if no folder is passed in', async function () {
+    const subject = new StaticSiteJson('this-folder-should-not-exist');
+    const output = createBuilder(subject);
+
+    await output.build();
+  });
 
   it('should build JSON files using the folder name', async function () {
     const input = await createTempDir();
