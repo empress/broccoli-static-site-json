@@ -1,3 +1,6 @@
+v4.3.0 / 2021-03-05
+==================
+  * Stop erroring with missing folder #53 from @mansona
 
 4.2.1 / 2020-05-27
 ==================
