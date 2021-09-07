@@ -112,7 +112,7 @@ ember generate model content
 
 This `content` name matches the example we used above when using the `StaticSiteJson()` broccoli plugin.
 
-No you are able to query your data in an Ember Route: 
+Now you are able to query your data in an Ember Route: 
 
 ```javascript
 import Route from '@ember/routing/route';
