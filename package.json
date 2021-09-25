@@ -33,7 +33,7 @@
     "yaml-front-matter": "^4.1.0"
   },
   "devDependencies": {
-    "auto-changelog": "github:mansona/auto-changelog#epic",
+    "auto-changelog": "https://git@github.com/mansona/auto-changelog.git#epic",
     "broccoli": "^3.2.0",
     "broccoli-test-helper": "^2.0.0",
     "chai": "^4.2.0",
