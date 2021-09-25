@@ -185,4 +185,52 @@ This is where I write my really long essay to the world. I will start off bing *
     expect(error, 'Build did not error').to.be.ok;
     expect(error.message).to.equal('Unknown content type: faceyFace');
   });
+
+  it.only('should include page table of contents if included in contentTypes', async () => {
+    const result = await buildSingleFile(`# Hello world
+
+This is the first part
+
+## Second point
+
+I really like programming.
+
+### Second part sub point
+
+more info about programming
+
+## Third part
+
+how about now
+
+### Sub point
+more stuff
+
+
+#### Sub sub point
+
+even more stuff
+
+##### Sub sub sub point
+
+you're being silly now
+
+`, {
+      contentTypes: ['toc'],
+    });
+
+    expect(result.attributes.toc).to.deep.equal([
+      { text: 'Hello world', depth: '1', id: 'helloworld' },
+      { text: 'Second point', depth: '2', id: 'secondpoint' },
+      {
+        text: 'Second part sub point',
+        depth: '3',
+        id: 'secondpartsubpoint',
+      },
+      { text: 'Third part', depth: '2', id: 'thirdpart' },
+      { text: 'Sub point', depth: '3', id: 'subpoint' },
+      { text: 'Sub sub point', depth: '4', id: 'subsubpoint' },
+      { text: 'Sub sub sub point', depth: '5', id: 'subsubsubpoint' },
+    ]);
+  });
 });
