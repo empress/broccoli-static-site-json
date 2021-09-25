@@ -104,7 +104,7 @@ export default DS.JSONAPIAdapter.extend({
 
 ### Step 4
 
-Now we need to generate a Model so that we can request the data in a route: 
+Now we need to generate a Model so that we can request the data in a route:
 
 ```bash
 ember generate model content
@@ -112,7 +112,7 @@ ember generate model content
 
 This `content` name matches the example we used above when using the `StaticSiteJson()` broccoli plugin.
 
-Now you are able to query your data in an Ember Route: 
+Now you are able to query your data in an Ember Route:
 
 ```javascript
 import Route from '@ember/routing/route';
@@ -318,6 +318,8 @@ const jsonTree = new StaticSiteJson('content', {
   - Contains a simple html representation of the Markdown file
 - `description` - _optional_
   - Contains the first 260 characters of the content of the file
+- `toc` - _optional_
+  - Contains an array of each heading of in the Markdown file, which can be used to make an internal Table of Contents for that page
 
 
 ### Markdown rendering configuration
