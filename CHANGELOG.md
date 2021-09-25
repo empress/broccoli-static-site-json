@@ -1,3 +1,7 @@
+v4.4.1 / 2021-09-25
+==================
+* add documentation for `toc` content type #63 from @mansona
+
 v4.4.0 / 2021-09-25
 ==================
 * [FEATURE] Add Markdown Headers to JSON:API output #60 from @mansona
