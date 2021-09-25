@@ -21,12 +21,12 @@ async function buildSingleFile(fileContents, options) {
   return indexJSON.data;
 }
 
-describe('references or relationships', () => {
-  beforeEach(async () => {
+describe('references or relationships', function () {
+  beforeEach(async function () {
     input = await createTempDir();
   });
 
-  afterEach(async () => {
+  afterEach(async function () {
     try {
       await input.dispose();
     } finally {
@@ -38,7 +38,7 @@ describe('references or relationships', () => {
     }
   });
 
-  it('should not include relationship for tag if the frontmatter is included but no options passed', async () => {
+  it('should not include relationship for tag if the frontmatter is included but no options passed', async function () {
     const result = await buildSingleFile(`---
 tag: face
 ---
@@ -47,7 +47,7 @@ tag: face
     expect(result).not.have.property('relationships');
   });
 
-  it('should include title if the frontmatter is included and title is in attributes', async () => {
+  it('should include title if the frontmatter is included and title is in attributes', async function () {
     const result = await buildSingleFile(`---
 tag: face
 ---
@@ -60,7 +60,7 @@ tag: face
     expect(result.relationships.tag.data).have.property('type', 'tags');
   });
 
-  it('should allow you to customize the type of relationship', async () => {
+  it('should allow you to customize the type of relationship', async function () {
     const result = await buildSingleFile(`---
 tag: face
 profile: face.jpg
