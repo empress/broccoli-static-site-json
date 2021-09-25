@@ -21,12 +21,12 @@ async function buildSingleFile(fileContents, options) {
   return indexJSON.data;
 }
 
-describe('JSONAPI attributes', () => {
-  beforeEach(async () => {
+describe('JSONAPI attributes', function () {
+  beforeEach(async function () {
     input = await createTempDir();
   });
 
-  afterEach(async () => {
+  afterEach(async function () {
     try {
       await input.dispose();
     } finally {
@@ -38,7 +38,7 @@ describe('JSONAPI attributes', () => {
     }
   });
 
-  it('should not include title if the frontmatter is included but no options passed', async () => {
+  it('should not include title if the frontmatter is included but no options passed', async function () {
     const result = await buildSingleFile(`---
 title: a lovely title
 ---
@@ -48,7 +48,7 @@ title: a lovely title
     expect(result.attributes).have.property('content', '# Hello world');
   });
 
-  it('should include title if the frontmatter is included and title is in attributes', async () => {
+  it('should include title if the frontmatter is included and title is in attributes', async function () {
     const result = await buildSingleFile(`---
 title: a lovely title
 ---
@@ -60,7 +60,7 @@ title: a lovely title
     expect(result.attributes).have.property('content', '# Hello world');
   });
 
-  it('should not inlude any extra frontmatter that is not defined in attributes', async () => {
+  it('should not inlude any extra frontmatter that is not defined in attributes', async function () {
     const result = await buildSingleFile(`---
 unknown: some unknown frontmatter
 ---
@@ -69,7 +69,7 @@ unknown: some unknown frontmatter
     expect(result.attributes).to.not.have.property('unknown');
   });
 
-  it('should allow you to specify attributes and for them to be included in the output', async () => {
+  it('should allow you to specify attributes and for them to be included in the output', async function () {
     const result = await buildSingleFile(`---
 known: some frontmatter
 ---
@@ -80,7 +80,7 @@ known: some frontmatter
     expect(result.attributes).to.have.property('known', 'some frontmatter');
   });
 
-  it('should make the frontmatter description take precedent if attribute description is specified', async () => {
+  it('should make the frontmatter description take precedent if attribute description is specified', async function () {
     const result = await buildSingleFile(`---
 description: use me instead
 ---
@@ -91,7 +91,7 @@ description: use me instead
     expect(result.attributes).to.have.property('description', 'use me instead');
   });
 
-  it('should make the frontmatter description take precedent if contentType description is specified', async () => {
+  it('should make the frontmatter description take precedent if contentType description is specified', async function () {
     const result = await buildSingleFile(`---
 description: use me instead
 ---
@@ -102,13 +102,13 @@ description: use me instead
     expect(result.attributes).to.have.property('description', 'use me instead');
   });
 
-  it('should only include html and content with basic config', async () => {
+  it('should only include html and content with basic config', async function () {
     const result = await buildSingleFile('# Hello world');
 
     expect(result.attributes).have.keys(['html', 'content']);
   });
 
-  it('should not include html if it is not in the content types', async () => {
+  it('should not include html if it is not in the content types', async function () {
     const result = await buildSingleFile('# Hello world', {
       contentTypes: ['content'],
     });
@@ -116,7 +116,7 @@ description: use me instead
     expect(result.attributes).have.keys(['content']);
   });
 
-  it('should not include markdown if it is not in the content types', async () => {
+  it('should not include markdown if it is not in the content types', async function () {
     const result = await buildSingleFile('# Hello world', {
       contentTypes: ['html'],
     });
@@ -124,7 +124,7 @@ description: use me instead
     expect(result.attributes).have.keys(['html']);
   });
 
-  it('should include description if it is defined in config', async () => {
+  it('should include description if it is defined in config', async function () {
     const result = await buildSingleFile('# Hello world', {
       contentTypes: ['html', 'content', 'description'],
     });
@@ -132,7 +132,7 @@ description: use me instead
     expect(result.attributes).have.keys(['html', 'content', 'description']);
   });
 
-  it('should limit description to 260 characters', async () => {
+  it('should limit description to 260 characters', async function () {
     const result = await buildSingleFile(`# Hello world
 
 This is where I write my really long essay to the world. I will start off bing **super** important and then _slow down_ to a stop.
@@ -146,7 +146,7 @@ I really like programming. I could do this all day long without ever stooopping,
     expect(result.attributes.description).to.have.lengthOf.at.most(260);
   });
 
-  it('should end the description with ... when the content is limited', async () => {
+  it('should end the description with ... when the content is limited', async function () {
     const result = await buildSingleFile(`# Hello world
 
 This is where I write my really long essay to the world. I will start off bing **super** important and then _slow down_ to a stop.
@@ -160,7 +160,7 @@ I really like programming. I could do this all day long without ever stooopping,
     expect(result.attributes.description).to.match(/\.\.\.$/);
   });
 
-  it('should not end the description with ... when the content is not limited', async () => {
+  it('should not end the description with ... when the content is not limited', async function () {
     const result = await buildSingleFile(`# Hello world
 
 This is where I write my really long essay to the world. I will start off bing **super** important and then _slow down_ to a stop.
@@ -171,7 +171,7 @@ This is where I write my really long essay to the world. I will start off bing *
     expect(result.attributes.description).to.not.match(/\.\.\.$/);
   });
 
-  it('should throw an error if there is an unknown content type', async () => {
+  it('should throw an error if there is an unknown content type', async function () {
     let error;
 
     try {
@@ -186,7 +186,7 @@ This is where I write my really long essay to the world. I will start off bing *
     expect(error.message).to.equal('Unknown content type: faceyFace');
   });
 
-  it('should include page table of contents if included in contentTypes', async () => {
+  it('should include page table of contents if included in contentTypes', async function () {
     const result = await buildSingleFile(`# Hello world
 
 This is the first part

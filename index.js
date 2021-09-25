@@ -8,7 +8,6 @@ const TableOfContents = require('./lib/table-of-contents');
 const CollateJsonApiBlobs = require('./lib/collate-and-paginate');
 const MarkdownToJsonApi = require('./lib/markdown-to-jsonapi');
 
-
 class EmptyNode extends Plugin {
   constructor() {
     super([]);

@@ -29,12 +29,12 @@ async function buildFiles(files, options) {
   return outputFiles;
 }
 
-describe('collections', () => {
-  beforeEach(async () => {
+describe('collections', function () {
+  beforeEach(async function () {
     input = await createTempDir();
   });
 
-  afterEach(async () => {
+  afterEach(async function () {
     try {
       await input.dispose();
     } finally {
@@ -46,7 +46,7 @@ describe('collections', () => {
     }
   });
 
-  it('should have the same ids for collection objects as it does for individual objects', async () => {
+  it('should have the same ids for collection objects as it does for individual objects', async function () {
     const files = await buildFiles({
       'index.md': `---
 title: a lovely title
@@ -74,7 +74,7 @@ title: more words
     expect(files['all.json'].find((obj) => obj.id === 'double-word')).to.be.ok;
   });
 
-  it('should allow you to define a collection and for the specified content folder to be exported as an single JSONAPI array response', async () => {
+  it('should allow you to define a collection and for the specified content folder to be exported as an single JSONAPI array response', async function () {
     const subject = new StaticSiteJson(input.path(), {
       attributes: ['title'],
       type: 'page',
@@ -131,7 +131,7 @@ title: more words
     });
   });
 
-  it('should still generate the all.json even if there is only one input file', async () => {
+  it('should still generate the all.json even if there is only one input file', async function () {
     const subject = new StaticSiteJson(input.path(), {
       attributes: ['title'],
       type: 'page',
@@ -165,7 +165,7 @@ title: a lovely title
     });
   });
 
-  it('should work if a broccoli plugin is passed in instead of a folder', async () => {
+  it('should work if a broccoli plugin is passed in instead of a folder', async function () {
     const mdFiles = new Funnel(input.path(), { destDir: 'face' });
 
     const subject = new StaticSiteJson(mdFiles, {

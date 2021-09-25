@@ -7,12 +7,12 @@ const StaticSiteJson = require('../index');
 let output;
 let input;
 
-describe('pagination', () => {
-  beforeEach(async () => {
+describe('pagination', function () {
+  beforeEach(async function () {
     input = await createTempDir();
   });
 
-  afterEach(async () => {
+  afterEach(async function () {
     try {
       await input.dispose();
     } finally {
@@ -24,7 +24,7 @@ describe('pagination', () => {
     }
   });
 
-  it('should allow you to specify page size with pagination', async () => {
+  it('should allow you to specify page size with pagination', async function () {
     const mdFiles = new Funnel(input.path(), { destDir: 'face' });
 
     const subject = new StaticSiteJson(mdFiles, {
@@ -66,7 +66,7 @@ title: more words
     expect(JSON.parse(folderOutput.content['all.json']).data).to.have.length(2);
   });
 
-  it('should automatically paginate 10 files when pagination is turned on', async () => {
+  it('should automatically paginate 10 files when pagination is turned on', async function () {
     const mdFiles = new Funnel(input.path(), { destDir: 'face' });
 
     const subject = new StaticSiteJson(mdFiles, {
@@ -136,7 +136,7 @@ title: duplicate
     expect(JSON.parse(folderOutput.content['all-1.json']).data).to.have.length(2);
   });
 
-  it('should setup pagination links correctly', async () => {
+  it('should setup pagination links correctly', async function () {
     const mdFiles = new Funnel(input.path(), { destDir: 'face' });
 
     const subject = new StaticSiteJson(mdFiles, {
@@ -222,7 +222,7 @@ title: duplicate
     });
   });
 
-  it('should prefix pagination links with the right contentFolder', async () => {
+  it('should prefix pagination links with the right contentFolder', async function () {
     const mdFiles = new Funnel(input.path(), { destDir: 'face' });
 
     const subject = new StaticSiteJson(mdFiles, {

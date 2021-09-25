@@ -42,7 +42,7 @@ describe('core functionality', function () {
     await input.dispose();
   });
 
-  it('should ignore non .md files', async () => {
+  it('should ignore non .md files', async function () {
     const input = await createTempDir();
 
     const subject = new StaticSiteJson(input.path());
@@ -64,7 +64,7 @@ describe('core functionality', function () {
     await input.dispose();
   });
 
-  it('should work recursively', async () => {
+  it('should work recursively', async function () {
     const input = await createTempDir();
 
     const subject = new StaticSiteJson(input.path());
@@ -96,7 +96,7 @@ describe('core functionality', function () {
     await input.dispose();
   });
 
-  it('should work with a broccoli plugin as an input', async () => {
+  it('should work with a broccoli plugin as an input', async function () {
     const input = await createTempDir();
 
     const mdFiles = new Funnel(input.path());
@@ -130,7 +130,7 @@ describe('core functionality', function () {
     await input.dispose();
   });
 
-  it('should allow you to specify the destination directoy with contentFolder', async () => {
+  it('should allow you to specify the destination directoy with contentFolder', async function () {
     const input = await createTempDir();
 
     const subject = new StaticSiteJson(input.path(), {
@@ -152,7 +152,7 @@ describe('core functionality', function () {
     await input.dispose();
   });
 
-  it('should allow you to override the JSON:API type', async () => {
+  it('should allow you to override the JSON:API type', async function () {
     const input = await createTempDir();
 
     const subject = new StaticSiteJson(input.path(), {
@@ -183,7 +183,7 @@ describe('core functionality', function () {
     await input.dispose();
   });
 
-  it('should read pages.yaml and produce the TOC pages.json file', async () => {
+  it('should read pages.yaml and produce the TOC pages.json file', async function () {
     const input = await createTempDir();
 
     const subject = new StaticSiteJson(input.path(), {
