@@ -25,7 +25,6 @@
     "jsdom": "^17.0.0",
     "jsonapi-serializer": "^3.6.0",
     "lodash": "^4.17.0",
-    "mkdirp": "^0.5.1",
     "shelljs": "^0.8.3",
     "showdown": "^1.9.1",
     "walk-sync": "^3.0.0",
