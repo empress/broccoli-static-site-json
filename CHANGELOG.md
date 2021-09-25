@@ -1,3 +1,13 @@
+v4.4.0 / 2021-09-25
+==================
+* [FEATURE] Add Markdown Headers to JSON:API output #60 from @mansona
+* Update dependencies #62 from @mansona
+* Add Mocha test linting #61 from @mansona
+* simplify markdown-to-jsonapi test #59 from @mansona
+* remove changelog preview and update scripts #58 from @mansona
+* move from travis to github actions #57 from @mansona
+* Update README.md #56 from @MelSumner
+
 v4.3.0 / 2021-03-05
 ==================
   * Stop erroring with missing folder #53 from @mansona
