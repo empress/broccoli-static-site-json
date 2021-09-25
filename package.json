@@ -11,9 +11,7 @@
     "lint:js": "eslint .",
     "test": "node scripts/test.js",
     "test-watch": "node scripts/test-watch.js",
-    "release": "release-it",
-    "changelog:preview": "auto-changelog --template=.changelog/compact.hbs --stdout",
-    "changelog:update": "auto-changelog --template=.changelog/regular.hbs"
+    "release": "release-it"
   },
   "dependencies": {
     "broccoli-funnel": "^3.0.1",
