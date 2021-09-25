@@ -186,7 +186,7 @@ This is where I write my really long essay to the world. I will start off bing *
     expect(error.message).to.equal('Unknown content type: faceyFace');
   });
 
-  it.only('should include page table of contents if included in contentTypes', async () => {
+  it('should include page table of contents if included in contentTypes', async () => {
     const result = await buildSingleFile(`# Hello world
 
 This is the first part
