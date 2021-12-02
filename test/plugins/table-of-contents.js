@@ -68,4 +68,31 @@ describe('table-of-contents', function () {
 
     expect(output.changes()).to.deep.equal({});
   });
+
+  it('should build toc.yml', async function () {
+    const subject = new StaticSiteJson(input.path());
+    output = createBuilder(subject);
+
+    // INITIAL
+    input.write({
+      'toc.yml': `- title: "Getting Started"
+  url: 'getting-started'
+  pages:
+    - title: "How To Use The Guides"
+      url: "intro"`,
+    });
+
+    await output.build();
+
+    expect(output.read()).to.deep.equal({
+      content: {
+        'toc.json': '{"data":[{"type":"pages","id":"getting-started","attributes":{"title":"Getting Started","pages":[{"title":"How To Use The Guides","url":"getting-started/intro"}]}}]}',
+      },
+    });
+
+    expect(output.changes()).to.deep.equal({
+      'content/': 'mkdir',
+      'content/toc.json': 'create',
+    });
+  });
 });
