@@ -2,7 +2,7 @@
 
 const { createBuilder, createTempDir } = require('broccoli-test-helper');
 const { expect } = require('chai');
-const TableOfContents = require('../../lib/table-of-contents');
+const StaticSiteJson = require('../../index');
 
 describe('table-of-contents', function () {
   let input;
@@ -18,7 +18,7 @@ describe('table-of-contents', function () {
   });
 
   it('should build pages.yml', async function () {
-    const subject = new TableOfContents(input.path());
+    const subject = new StaticSiteJson(input.path());
     output = createBuilder(subject);
 
     // INITIAL
@@ -33,11 +33,14 @@ describe('table-of-contents', function () {
     await output.build();
 
     expect(output.read()).to.deep.equal({
-      'pages.json': '{"data":[{"type":"pages","id":"getting-started","attributes":{"title":"Getting Started","pages":[{"title":"How To Use The Guides","url":"getting-started/intro"}]}}]}',
+      content: {
+        'pages.json': '{"data":[{"type":"pages","id":"getting-started","attributes":{"title":"Getting Started","pages":[{"title":"How To Use The Guides","url":"getting-started/intro"}]}}]}',
+      },
     });
 
     expect(output.changes()).to.deep.equal({
-      'pages.json': 'create',
+      'content/': 'mkdir',
+      'content/pages.json': 'create',
     });
 
     // UPDATE
@@ -51,11 +54,13 @@ describe('table-of-contents', function () {
     await output.build();
 
     expect(output.read()).to.deep.equal({
-      'pages.json': '{"data":[{"type":"pages","id":"tutorial","attributes":{"title":"Tutorial","pages":[{"title":"Creating Your App","url":"tutorial/ember-cli"}]}}]}',
+      content: {
+        'pages.json': '{"data":[{"type":"pages","id":"tutorial","attributes":{"title":"Tutorial","pages":[{"title":"Creating Your App","url":"tutorial/ember-cli"}]}}]}',
+      },
     });
 
     expect(output.changes()).to.deep.equal({
-      'pages.json': 'change',
+      'content/pages.json': 'change',
     });
 
     // NOOP
