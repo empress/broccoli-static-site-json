@@ -27,8 +27,10 @@ module.exports = function StaticSiteJson(folder, options = {}) {
   const tocFunnel = new BroccoliFunnel(folder, {
     include: [
       '**/pages.yml',
+      '**/pages.yaml',
       '**/pages.json',
       '**/toc.yml',
+      '**/toc.yaml',
       '**/toc.json',
     ],
   });

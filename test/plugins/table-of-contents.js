@@ -95,4 +95,31 @@ describe('table-of-contents', function () {
       'content/toc.json': 'create',
     });
   });
+
+  it('should build toc.yaml', async function () {
+    const subject = new StaticSiteJson(input.path());
+    output = createBuilder(subject);
+
+    // INITIAL
+    input.write({
+      'toc.yaml': `- title: "Getting Started"
+  url: 'getting-started'
+  pages:
+    - title: "How To Use The Guides"
+      url: "intro"`,
+    });
+
+    await output.build();
+
+    expect(output.read()).to.deep.equal({
+      content: {
+        'toc.json': '{"data":[{"type":"pages","id":"getting-started","attributes":{"title":"Getting Started","pages":[{"title":"How To Use The Guides","url":"getting-started/intro"}]}}]}',
+      },
+    });
+
+    expect(output.changes()).to.deep.equal({
+      'content/': 'mkdir',
+      'content/toc.json': 'create',
+    });
+  });
 });
