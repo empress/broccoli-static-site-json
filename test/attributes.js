@@ -233,4 +233,78 @@ you're being silly now
       { text: 'Sub sub sub point', depth: '5', id: 'subsubsubpoint' },
     ]);
   });
+
+  it('not include headers that are in code blocks', async function () {
+    const result = await buildSingleFile(`# Hello world
+
+This is the first part
+
+\`\`\`html face
+<div class="messages">
+  <aside>
+    <div class="avatar is-active" title="Tomster's avatar">T</div>
+  </aside>
+  <section>
+    <h4 class="username">
+      Tomster
+      <span class="local-time">their local time is 4:56pm</span>
+    </h4>
+
+    <p>
+      Hey Zoey, have you had a chance to look at the EmberConf brainstorming doc
+      I sent you?
+    </p>
+  </section>
+
+  <aside class="current-user">
+    <div class="avatar" title="Zoey's avatar">Z</div>
+  </aside>
+  <section>
+    <h4 class="username">Zoey</h4>
+
+    <p>Hey!</p>
+
+    <p>
+      I love the ideas! I'm really excited about where this year's EmberConf is
+      going, I'm sure it's going to be the best one yet. Some quick notes:
+    </p>
+
+    <ul>
+      <li>
+        Definitely agree that we should double the coffee budget this year (it
+        really is impressive how much we go through!)
+      </li>
+      <li>
+        A blimp would definitely make the venue very easy to find, but I think
+        it might be a bit out of our budget. Maybe we could rent some spotlights
+        instead?
+      </li>
+      <li>
+        We absolutely will need more hamster wheels, last year's line was
+        <em>way</em> too long. Will get on that now before rental season hits
+        its peak.
+      </li>
+    </ul>
+
+    <p>Let me know when you've nailed down the dates!</p>
+  </section>
+
+  <form>
+    <label for="message">Message</label>
+    <input id="message" />
+    <button type="submit">
+      Send
+    </button>
+  </form>
+</div>
+\`\`\`
+
+`, {
+      contentTypes: ['toc'],
+    });
+
+    expect(result.attributes.toc).to.deep.equal([
+      { text: 'Hello world', depth: '1', id: 'helloworld' },
+    ]);
+  });
 });
