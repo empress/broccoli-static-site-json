@@ -307,4 +307,22 @@ This is the first part
       { text: 'Hello world', depth: '1', id: 'helloworld' },
     ]);
   });
+
+  it('can provide config for showdown when building toc', async function () {
+    const result = await buildSingleFile(`# Hello world
+
+This is the only part
+
+`, {
+      contentTypes: ['toc'],
+      showdownConfig: {
+        ghCompatibleHeaderId: true,
+        prefixHeaderId: 'toc_',
+      },
+    });
+
+    expect(result.attributes.toc).to.deep.equal([
+      { text: 'Hello world', depth: '1', id: 'toc_hello-world' },
+    ]);
+  });
 });
