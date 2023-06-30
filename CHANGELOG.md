@@ -1,3 +1,8 @@
+v4.5.0 / 2023-06-30
+==================
+* don't find headers in code blocks for the on-this-page #71 from @mansona
+* Support toc yaml #64 from @mansona
+
 v4.4.1 / 2021-09-25
 ==================
 * add documentation for `toc` content type #63 from @mansona
