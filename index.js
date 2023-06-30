@@ -25,7 +25,14 @@ module.exports = function StaticSiteJson(folder, options = {}) {
     include: ['**/*.md', '**/*.markdown'],
   });
   const tocFunnel = new BroccoliFunnel(folder, {
-    include: ['**/pages.yml', '**/pages.json'],
+    include: [
+      '**/pages.yml',
+      '**/pages.yaml',
+      '**/pages.json',
+      '**/toc.yml',
+      '**/toc.yaml',
+      '**/toc.json',
+    ],
   });
   const pagesTree = new TableOfContents(tocFunnel, options);
   const jsonApiTree = new MarkdownToJsonApi(cleanMarkdownFunnel, options);
