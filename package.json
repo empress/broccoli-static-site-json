@@ -10,8 +10,7 @@
     "coverage": "node scripts/coverage.js",
     "lint:js": "eslint .",
     "test": "node scripts/test.js",
-    "test-watch": "node scripts/test-watch.js",
-    "release": "release-it"
+    "test-watch": "node scripts/test-watch.js"
   },
   "dependencies": {
     "broccoli-funnel": "^3.0.0",
@@ -31,7 +30,6 @@
     "yaml-front-matter": "^4.0.0"
   },
   "devDependencies": {
-    "auto-changelog": "https://git@github.com/mansona/auto-changelog.git#epic",
     "broccoli": "^3.5.2",
     "broccoli-test-helper": "^2.0.0",
     "chai": "^4.3.4",
@@ -41,7 +39,7 @@
     "eslint-plugin-mocha": "^9.0.0",
     "mocha": "^9.1.2",
     "nyc": "^15.1.0",
-    "release-it": "^14.11.6",
+    "release-plan": "^0.7.0",
     "sinon": "^11.1.2"
   }
 }

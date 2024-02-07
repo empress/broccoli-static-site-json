@@ -1,3 +1,5 @@
+# Changelog
+
 v4.5.0 / 2023-06-30
 ==================
 * don't find headers in code blocks for the on-this-page #71 from @mansona
