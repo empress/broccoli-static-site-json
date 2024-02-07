@@ -1,5 +1,24 @@
 # Changelog
 
+## Release (2024-02-07)
+
+broccoli-static-site-json 5.0.0 (major)
+
+#### :boom: Breaking Change
+* `broccoli-static-site-json`
+  * [#75](https://github.com/empress/broccoli-static-site-json/pull/75) drop support for node < 16 ([@mansona](https://github.com/mansona))
+
+#### :rocket: Enhancement
+* `broccoli-static-site-json`
+  * [#76](https://github.com/empress/broccoli-static-site-json/pull/76) update showdown and jsdom ([@mansona](https://github.com/mansona))
+
+#### :house: Internal
+* `broccoli-static-site-json`
+  * [#73](https://github.com/empress/broccoli-static-site-json/pull/73) start using release-plan ([@mansona](https://github.com/mansona))
+
+#### Committers: 1
+- Chris Manson ([@mansona](https://github.com/mansona))
+
 v4.5.0 / 2023-06-30
 ==================
 * don't find headers in code blocks for the on-this-page #71 from @mansona
